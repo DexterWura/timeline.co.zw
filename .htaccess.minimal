@@ -1,7 +1,0 @@
-# Minimal .htaccess for testing
-RewriteEngine On
-
-# Basic URL rewriting
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^([^/]+)/?$ $1.php [L,QSA]

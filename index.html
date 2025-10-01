@@ -1,20 +1,424 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Timeline.co.zw - Test</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timeline.co.zw - Music Charts & Entertainment</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <h1>Timeline.co.zw Server Test</h1>
-    <p>If you can see this page, the web server is working correctly.</p>
-    <p>Current time: <script>document.write(new Date());</script></p>
-    
-    <h2>This is a basic HTML file</h2>
-    <p>No PHP, no .htaccess rules, no special configuration.</p>
-    
-    <h2>Next Steps:</h2>
-    <ul>
-        <li>If you see this page → Server is working, issue is with PHP configuration</li>
-        <li>If you get 500 error → Server configuration problem</li>
-    </ul>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-top">
+            <div class="container">
+                <div class="header-top-content">
+                    <div class="logo">
+                        <i class="fas fa-music"></i>
+                        <span>timeline</span>
+                    </div>
+                    <nav class="main-nav">
+                        <a href="index.html" class="nav-link active">Home</a>
+                        <a href="charts.html" class="nav-link">Charts</a>
+                        <a href="videos.html" class="nav-link">Videos</a>
+                        <a href="richest.html" class="nav-link">Richest</a>
+                        <a href="awards.html" class="nav-link">Awards</a>
+                        <a href="business.html" class="nav-link">Business</a>
+                    </nav>
+                    <div class="header-actions">
+                        <button class="subscribe-btn">SUBSCRIBE</button>
+                        <button class="login-btn">LOGIN</button>
+                        <button class="search-btn"><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="header-bottom">
+            <div class="container">
+                <div class="chart-nav">
+                    <a href="charts.html" class="chart-nav-link active">TIMELINE HOT 100™</a>
+                    <a href="charts.html" class="chart-nav-link">TIMELINE 200™</a>
+                    <a href="charts.html" class="chart-nav-link">GLOBAL 200</a>
+                    <a href="charts.html" class="chart-nav-link">ARTIST 100</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-background">
+            <div class="hero-particles"></div>
+        </div>
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    <span class="title-line">Discover the</span>
+                    <span class="title-line highlight">Hottest Music</span>
+                    <span class="title-line">Charts</span>
+                </h1>
+                <p class="hero-subtitle">Real-time music charts, trending videos, and entertainment news from around the world</p>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <div class="stat-number" data-target="1000000">0</div>
+                        <div class="stat-label">Monthly Listeners</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" data-target="50000">0</div>
+                        <div class="stat-label">Songs Tracked</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" data-target="200">0</div>
+                        <div class="stat-label">Countries</div>
+                    </div>
+                </div>
+                <div class="hero-actions">
+                    <button class="btn btn-primary">Explore Charts</button>
+                    <button class="btn btn-secondary">Watch Videos</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Charts Section -->
+    <section class="featured-charts">
+        <div class="container">
+            <h2 class="section-title">Featured Charts</h2>
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <div class="chart-icon">
+                        <i class="fas fa-music"></i>
+                    </div>
+                    <h3>Hot 100</h3>
+                    <p>Top 100 songs trending worldwide</p>
+                    <a href="charts.html" class="chart-link">View Chart <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-icon">
+                        <i class="fas fa-video"></i>
+                    </div>
+                    <h3>Top Videos</h3>
+                    <p>Most watched music videos</p>
+                    <a href="videos.html" class="chart-link">View Chart <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <h3>Awards</h3>
+                    <p>Music industry awards and recognition</p>
+                    <a href="awards.html" class="chart-link">View Awards <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Business</h3>
+                    <p>Music industry business insights</p>
+                    <a href="business.html" class="chart-link">View Charts <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trending Now Section -->
+    <section class="trending-now">
+        <div class="container">
+            <h2 class="section-title">Trending Now</h2>
+            
+            <!-- Trending Categories Tabs -->
+            <div class="trending-tabs">
+                <button class="trending-tab active" data-category="music">Music</button>
+                <button class="trending-tab" data-category="videos">Videos</button>
+                <button class="trending-tab" data-category="news">News</button>
+                <button class="trending-tab" data-category="artists">Artists</button>
+            </div>
+
+            <!-- Trending Music -->
+            <div class="trending-content active" id="trending-music">
+                <div class="trending-grid">
+                    <div class="trending-item">
+                        <div class="trending-rank">1</div>
+                        <div class="trending-artwork">
+                            <img src="https://i.scdn.co/image/ab67616d0000b2731234567890abcdef12345678" alt="Golden" class="artwork-img">
+                        </div>
+                        <div class="trending-info">
+                            <h4>Golden</h4>
+                            <p>HUNTR/X: EJAE, Audrey Nuna & REI AMI</p>
+                            <div class="trending-stats">
+                                <span class="weeks">14 weeks</span>
+                                <span class="peak">Peak: #1</span>
+                            </div>
+                        </div>
+                        <div class="trending-actions">
+                            <button class="play-btn"><i class="fas fa-play"></i></button>
+                            <button class="add-btn"><i class="fas fa-plus"></i></button>
+                        </div>
+                    </div>
+                    <div class="trending-item">
+                        <div class="trending-rank">2</div>
+                        <div class="trending-artwork">
+                            <img src="https://i.scdn.co/image/ab67616d0000b2732345678901bcdef23456789" alt="Ordinary" class="artwork-img">
+                        </div>
+                        <div class="trending-info">
+                            <h4>Ordinary</h4>
+                            <p>Alex Warren</p>
+                            <div class="trending-stats">
+                                <span class="weeks">33 weeks</span>
+                                <span class="peak">Peak: #1</span>
+                            </div>
+                        </div>
+                        <div class="trending-actions">
+                            <button class="play-btn"><i class="fas fa-play"></i></button>
+                            <button class="add-btn"><i class="fas fa-plus"></i></button>
+                        </div>
+                    </div>
+                    <div class="trending-item">
+                        <div class="trending-rank">3</div>
+                        <div class="trending-artwork">
+                            <img src="https://i.scdn.co/image/ab67616d0000b2733456789012cdef34567890" alt="Soda" class="artwork-img">
+                        </div>
+                        <div class="trending-info">
+                            <h4>Soda</h4>
+                            <p>Various Artists</p>
+                            <div class="trending-stats">
+                                <span class="weeks">8 weeks</span>
+                                <span class="peak">Peak: #3</span>
+                            </div>
+                        </div>
+                        <div class="trending-actions">
+                            <button class="play-btn"><i class="fas fa-play"></i></button>
+                            <button class="add-btn"><i class="fas fa-plus"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Trending Videos -->
+            <div class="trending-content" id="trending-videos">
+                <div class="trending-grid">
+                    <div class="trending-item">
+                        <div class="trending-rank">1</div>
+                        <div class="trending-artwork">
+                            <img src="https://via.placeholder.com/60x60/f093fb/ffffff?text=MV" alt="Music Video" class="artwork-img">
+                        </div>
+                        <div class="trending-info">
+                            <h4>Golden - Official Music Video</h4>
+                            <p>HUNTR/X: EJAE, Audrey Nuna & REI AMI</p>
+                            <div class="trending-stats">
+                                <span class="views">125.4M views</span>
+                                <span class="time">2 days ago</span>
+                            </div>
+                        </div>
+                        <div class="trending-actions">
+                            <button class="play-btn"><i class="fas fa-play"></i></button>
+                            <button class="add-btn"><i class="fas fa-share"></i></button>
+                        </div>
+                    </div>
+                    <div class="trending-item">
+                        <div class="trending-rank">2</div>
+                        <div class="trending-artwork">
+                            <img src="https://via.placeholder.com/60x60/f5576c/ffffff?text=MV" alt="Music Video" class="artwork-img">
+                        </div>
+                        <div class="trending-info">
+                            <h4>Ordinary - Live Performance</h4>
+                            <p>Alex Warren</p>
+                            <div class="trending-stats">
+                                <span class="views">89.2M views</span>
+                                <span class="time">1 week ago</span>
+                            </div>
+                        </div>
+                        <div class="trending-actions">
+                            <button class="play-btn"><i class="fas fa-play"></i></button>
+                            <button class="add-btn"><i class="fas fa-share"></i></button>
+                        </div>
+                    </div>
+                    <div class="trending-item">
+                        <div class="trending-rank">3</div>
+                        <div class="trending-artwork">
+                            <img src="https://via.placeholder.com/60x60/4facfe/ffffff?text=MV" alt="Music Video" class="artwork-img">
+                        </div>
+                        <div class="trending-info">
+                            <h4>Soda - Dance Challenge</h4>
+                            <p>Various Artists</p>
+                            <div class="trending-stats">
+                                <span class="views">67.8M views</span>
+                                <span class="time">3 days ago</span>
+                            </div>
+                        </div>
+                        <div class="trending-actions">
+                            <button class="play-btn"><i class="fas fa-play"></i></button>
+                            <button class="add-btn"><i class="fas fa-share"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Trending News -->
+            <div class="trending-content" id="trending-news">
+                <div class="trending-grid">
+                    <div class="trending-item">
+                        <div class="trending-rank">1</div>
+                        <div class="trending-artwork">
+                            <img src="https://via.placeholder.com/60x60/00f2fe/ffffff?text=NEWS" alt="News" class="artwork-img">
+                        </div>
+                        <div class="trending-info">
+                            <h4>Taylor Swift Breaks Another Record with Midnights</h4>
+                            <p>Music Industry News</p>
+                            <div class="trending-stats">
+                                <span class="time">2 hours ago</span>
+                                <span class="category">Breaking</span>
+                            </div>
+                        </div>
+                        <div class="trending-actions">
+                            <button class="play-btn"><i class="fas fa-external-link-alt"></i></button>
+                            <button class="add-btn"><i class="fas fa-bookmark"></i></button>
+                        </div>
+                    </div>
+                    <div class="trending-item">
+                        <div class="trending-rank">2</div>
+                        <div class="trending-artwork">
+                            <img src="https://via.placeholder.com/60x60/ff6b6b/ffffff?text=NEWS" alt="News" class="artwork-img">
+                        </div>
+                        <div class="trending-info">
+                            <h4>Drake Announces New Album Release Date</h4>
+                            <p>Hip-Hop News</p>
+                            <div class="trending-stats">
+                                <span class="time">4 hours ago</span>
+                                <span class="category">Exclusive</span>
+                            </div>
+                        </div>
+                        <div class="trending-actions">
+                            <button class="play-btn"><i class="fas fa-external-link-alt"></i></button>
+                            <button class="add-btn"><i class="fas fa-bookmark"></i></button>
+                        </div>
+                    </div>
+                    <div class="trending-item">
+                        <div class="trending-rank">3</div>
+                        <div class="trending-artwork">
+                            <img src="https://via.placeholder.com/60x60/4ecdc4/ffffff?text=NEWS" alt="News" class="artwork-img">
+                        </div>
+                        <div class="trending-info">
+                            <h4>Billboard Music Awards 2025 Nominations Revealed</h4>
+                            <p>Awards News</p>
+                            <div class="trending-stats">
+                                <span class="time">6 hours ago</span>
+                                <span class="category">Awards</span>
+                            </div>
+                        </div>
+                        <div class="trending-actions">
+                            <button class="play-btn"><i class="fas fa-external-link-alt"></i></button>
+                            <button class="add-btn"><i class="fas fa-bookmark"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Trending Artists -->
+            <div class="trending-content" id="trending-artists">
+                <div class="trending-grid">
+                    <div class="trending-item">
+                        <div class="trending-rank">1</div>
+                        <div class="trending-artwork">
+                            <img src="https://via.placeholder.com/60x60/ff9ff3/ffffff?text=TS" alt="Taylor Swift" class="artwork-img">
+                        </div>
+                        <div class="trending-info">
+                            <h4>Taylor Swift</h4>
+                            <p>Pop Artist</p>
+                            <div class="trending-stats">
+                                <span class="followers">108.2M followers</span>
+                                <span class="trend">+2.1M this week</span>
+                            </div>
+                        </div>
+                        <div class="trending-actions">
+                            <button class="play-btn"><i class="fas fa-user-plus"></i></button>
+                            <button class="add-btn"><i class="fas fa-heart"></i></button>
+                        </div>
+                    </div>
+                    <div class="trending-item">
+                        <div class="trending-rank">2</div>
+                        <div class="trending-artwork">
+                            <img src="https://via.placeholder.com/60x60/54a0ff/ffffff?text=DR" alt="Drake" class="artwork-img">
+                        </div>
+                        <div class="trending-info">
+                            <h4>Drake</h4>
+                            <p>Hip-Hop Artist</p>
+                            <div class="trending-stats">
+                                <span class="followers">89.7M followers</span>
+                                <span class="trend">+1.8M this week</span>
+                            </div>
+                        </div>
+                        <div class="trending-actions">
+                            <button class="play-btn"><i class="fas fa-user-plus"></i></button>
+                            <button class="add-btn"><i class="fas fa-heart"></i></button>
+                        </div>
+                    </div>
+                    <div class="trending-item">
+                        <div class="trending-rank">3</div>
+                        <div class="trending-artwork">
+                            <img src="https://via.placeholder.com/60x60/5f27cd/ffffff?text=AG" alt="Ariana Grande" class="artwork-img">
+                        </div>
+                        <div class="trending-info">
+                            <h4>Ariana Grande</h4>
+                            <p>Pop Artist</p>
+                            <div class="trending-stats">
+                                <span class="followers">76.3M followers</span>
+                                <span class="trend">+1.5M this week</span>
+                            </div>
+                        </div>
+                        <div class="trending-actions">
+                            <button class="play-btn"><i class="fas fa-user-plus"></i></button>
+                            <button class="add-btn"><i class="fas fa-heart"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Timeline</h4>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Charts</h4>
+                    <ul>
+                        <li><a href="charts.html">Hot 100</a></li>
+                        <li><a href="videos.html">Top Videos</a></li>
+                        <li><a href="richest.html">Richest People</a></li>
+                        <li><a href="business.html">Business Charts</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Follow Us</h4>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Timeline.co.zw. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/imageService.js"></script>
+    <script src="js/images.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/animations.js"></script>
 </body>
 </html>

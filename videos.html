@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top 100 Videos - Timeline.co.zw</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/videos.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-top">
+            <div class="container">
+                <div class="header-top-content">
+                    <div class="logo">
+                        <i class="fas fa-music"></i>
+                        <span>timeline</span>
+                    </div>
+                    <nav class="main-nav">
+                        <a href="index.html" class="nav-link">Home</a>
+                        <a href="charts.html" class="nav-link">Charts</a>
+                        <a href="videos.html" class="nav-link active">Videos</a>
+                        <a href="richest.html" class="nav-link">Richest</a>
+                        <a href="awards.html" class="nav-link">Awards</a>
+                        <a href="business.html" class="nav-link">Business</a>
+                    </nav>
+                    <div class="header-actions">
+                        <button class="subscribe-btn">SUBSCRIBE</button>
+                        <button class="login-btn">LOGIN</button>
+                        <button class="search-btn"><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="header-bottom">
+            <div class="container">
+                <div class="chart-nav">
+                    <a href="videos.html" class="chart-nav-link active">TOP 100 VIDEOS</a>
+                    <a href="videos.html" class="chart-nav-link">MUSIC VIDEOS</a>
+                    <a href="videos.html" class="chart-nav-link">LIVE PERFORMANCES</a>
+                    <a href="videos.html" class="chart-nav-link">LYRIC VIDEOS</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Video Header -->
+    <section class="video-header">
+        <div class="container">
+            <div class="video-title-section">
+                <h1 class="video-title">TOP 100 VIDEOS</h1>
+                <div class="video-controls">
+                    <div class="view-selector">
+                        <button class="view-btn active" data-view="grid">
+                            <i class="fas fa-th"></i>
+                            Grid
+                        </button>
+                        <button class="view-btn" data-view="list">
+                            <i class="fas fa-list"></i>
+                            List
+                        </button>
+                    </div>
+                    <div class="video-actions">
+                        <button class="action-btn" title="Previous Week">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <button class="action-btn" title="Video Info">
+                            <i class="fas fa-info-circle"></i>
+                        </button>
+                        <button class="action-btn" title="Share Videos">
+                            <i class="fas fa-share-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Video Filters -->
+    <section class="video-filters">
+        <div class="container">
+            <div class="filter-tabs">
+                <button class="filter-tab active" data-filter="all">All Videos</button>
+                <button class="filter-tab" data-filter="trending">Trending</button>
+                <button class="filter-tab" data-filter="new">New Releases</button>
+                <button class="filter-tab" data-filter="viral">Viral</button>
+            </div>
+            <div class="filter-options">
+                <select class="category-filter">
+                    <option value="all">All Categories</option>
+                    <option value="music-video">Music Videos</option>
+                    <option value="live">Live Performances</option>
+                    <option value="lyric">Lyric Videos</option>
+                    <option value="behind-scenes">Behind the Scenes</option>
+                </select>
+                <select class="time-filter">
+                    <option value="all">All Time</option>
+                    <option value="today">Today</option>
+                    <option value="week">This Week</option>
+                    <option value="month">This Month</option>
+                    <option value="year">This Year</option>
+                </select>
+                <button class="sort-btn">
+                    <i class="fas fa-sort"></i>
+                    Sort by Views
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Video -->
+    <section class="featured-video">
+        <div class="container">
+            <div class="featured-content">
+                <div class="video-player">
+                    <div class="video-thumbnail">
+                        <img src="https://via.placeholder.com/800x450/00d4aa/ffffff?text=Featured+Video" alt="Featured Video" class="thumbnail-img">
+                        <div class="play-overlay">
+                            <button class="play-btn-large">
+                                <i class="fas fa-play"></i>
+                            </button>
+                        </div>
+                        <div class="video-duration">3:45</div>
+                        <div class="video-quality">HD</div>
+                    </div>
+                </div>
+                <div class="video-info">
+                    <div class="video-rank">#1</div>
+                    <h2 class="video-title">Golden - Official Music Video</h2>
+                    <p class="video-artist">HUNTR/X: EJAE, Audrey Nuna & REI AMI</p>
+                    <div class="video-stats">
+                        <div class="stat">
+                            <i class="fas fa-eye"></i>
+                            <span>125.4M views</span>
+                        </div>
+                        <div class="stat">
+                            <i class="fas fa-thumbs-up"></i>
+                            <span>2.1M likes</span>
+                        </div>
+                        <div class="stat">
+                            <i class="fas fa-clock"></i>
+                            <span>2 days ago</span>
+                        </div>
+                    </div>
+                    <p class="video-description">
+                        The official music video for "Golden" featuring stunning visuals and choreography 
+                        that perfectly captures the essence of the song.
+                    </p>
+                    <div class="video-actions">
+                        <button class="btn btn-primary">
+                            <i class="fas fa-play"></i>
+                            Watch Now
+                        </button>
+                        <button class="btn btn-secondary">
+                            <i class="fas fa-heart"></i>
+                            Like
+                        </button>
+                        <button class="btn btn-secondary">
+                            <i class="fas fa-share"></i>
+                            Share
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Video Grid/List -->
+    <section class="video-content">
+        <div class="container">
+            <div class="video-container" id="video-container">
+                <!-- Videos will be populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Video Modal -->
+    <div class="modal" id="video-modal">
+        <div class="modal-content video-modal-content">
+            <div class="modal-header">
+                <h3 id="modal-video-title">Video Title</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-video-player">
+                    <div class="video-placeholder">
+                        <i class="fas fa-play-circle"></i>
+                        <p>Video Player</p>
+                    </div>
+                </div>
+                <div class="modal-video-info">
+                    <div class="modal-stats">
+                        <span class="views">0 views</span>
+                        <span class="likes">0 likes</span>
+                        <span class="date">Uploaded 0 days ago</span>
+                    </div>
+                    <p class="modal-description">Video description will appear here.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Timeline</h4>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Charts</h4>
+                    <ul>
+                        <li><a href="charts.html">Hot 100</a></li>
+                        <li><a href="videos.html">Top Videos</a></li>
+                        <li><a href="richest.html">Richest People</a></li>
+                        <li><a href="business.html">Business Charts</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Follow Us</h4>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Timeline.co.zw. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/imageService.js"></script>
+    <script src="js/images.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/videos.js"></script>
+    <script src="js/animations.js"></script>
+</body>
+</html>

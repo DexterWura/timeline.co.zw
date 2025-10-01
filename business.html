@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Charts - Timeline.co.zw</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/business.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-top">
+            <div class="container">
+                <div class="header-top-content">
+                    <div class="logo">
+                        <i class="fas fa-music"></i>
+                        <span>timeline</span>
+                    </div>
+                    <nav class="main-nav">
+                        <a href="index.html" class="nav-link">Home</a>
+                        <a href="charts.html" class="nav-link">Charts</a>
+                        <a href="videos.html" class="nav-link">Videos</a>
+                        <a href="richest.html" class="nav-link">Richest</a>
+                        <a href="awards.html" class="nav-link">Awards</a>
+                        <a href="business.html" class="nav-link active">Business</a>
+                    </nav>
+                    <div class="header-actions">
+                        <button class="subscribe-btn">SUBSCRIBE</button>
+                        <button class="login-btn">LOGIN</button>
+                        <button class="search-btn"><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="header-bottom">
+            <div class="container">
+                <div class="chart-nav">
+                    <a href="business.html" class="chart-nav-link active">BUSINESS CHARTS</a>
+                    <a href="business.html" class="chart-nav-link">REVENUE CHARTS</a>
+                    <a href="business.html" class="chart-nav-link">MARKET SHARE</a>
+                    <a href="business.html" class="chart-nav-link">INDUSTRY TRENDS</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Business Header -->
+    <section class="business-header">
+        <div class="container">
+            <div class="business-title-section">
+                <h1 class="business-title">BUSINESS CHARTS</h1>
+                <div class="business-controls">
+                    <div class="period-selector">
+                        <button class="period-btn">
+                            <i class="fas fa-calendar"></i>
+                            Q4 2025
+                        </button>
+                    </div>
+                    <div class="business-actions">
+                        <button class="action-btn" title="Previous Quarter">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <button class="action-btn" title="Business Info">
+                            <i class="fas fa-info-circle"></i>
+                        </button>
+                        <button class="action-btn" title="Share Charts">
+                            <i class="fas fa-share-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Business Filters -->
+    <section class="business-filters">
+        <div class="container">
+            <div class="filter-tabs">
+                <button class="filter-tab active" data-filter="all">All Metrics</button>
+                <button class="filter-tab" data-filter="revenue">Revenue</button>
+                <button class="filter-tab" data-filter="streaming">Streaming</button>
+                <button class="filter-tab" data-filter="sales">Sales</button>
+            </div>
+            <div class="filter-options">
+                <select class="timeframe-filter">
+                    <option value="quarterly">Quarterly</option>
+                    <option value="yearly">Yearly</option>
+                    <option value="monthly">Monthly</option>
+                </select>
+                <button class="sort-btn">
+                    <i class="fas fa-sort"></i>
+                    Sort by Value
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Key Metrics -->
+    <section class="key-metrics">
+        <div class="container">
+            <h2 class="section-title">Key Industry Metrics</h2>
+            <div class="metrics-grid">
+                <div class="metric-card featured">
+                    <div class="metric-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="metric-info">
+                        <h3>Streaming Revenue</h3>
+                        <div class="metric-value">$12.3B</div>
+                        <div class="metric-change positive">+15.2%</div>
+                        <p class="metric-description">Total streaming revenue for Q4 2025</p>
+                    </div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-icon">
+                        <i class="fas fa-compact-disc"></i>
+                    </div>
+                    <div class="metric-info">
+                        <h3>Physical Sales</h3>
+                        <div class="metric-value">$1.8B</div>
+                        <div class="metric-change negative">-8.5%</div>
+                        <p class="metric-description">Physical music sales revenue</p>
+                    </div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-icon">
+                        <i class="fas fa-download"></i>
+                    </div>
+                    <div class="metric-info">
+                        <h3>Digital Downloads</h3>
+                        <div class="metric-value">$0.9B</div>
+                        <div class="metric-change negative">-22.1%</div>
+                        <p class="metric-description">Digital download sales</p>
+                    </div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-icon">
+                        <i class="fas fa-sync"></i>
+                    </div>
+                    <div class="metric-info">
+                        <h3>Sync Revenue</h3>
+                        <div class="metric-value">$0.4B</div>
+                        <div class="metric-change positive">+5.7%</div>
+                        <p class="metric-description">Music synchronization revenue</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Business Charts -->
+    <section class="business-charts">
+        <div class="container">
+            <h2 class="section-title">Industry Analysis</h2>
+            <div class="charts-grid" id="charts-grid">
+                <!-- Charts will be populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Market Leaders -->
+    <section class="market-leaders">
+        <div class="container">
+            <h2 class="section-title">Market Leaders</h2>
+            <div class="leaders-list" id="leaders-list">
+                <!-- Leaders will be populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Business Info Modal -->
+    <div class="modal" id="business-info-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Business Data Methodology</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Our business charts are based on comprehensive industry data from leading music industry sources.</p>
+                <h4>Data Sources</h4>
+                <ul>
+                    <li>RIAA (Recording Industry Association of America)</li>
+                    <li>IFPI (International Federation of the Phonographic Industry)</li>
+                    <li>Streaming platform reports</li>
+                    <li>Record label financial disclosures</li>
+                    <li>Market research reports</li>
+                </ul>
+                <h4>Update Frequency</h4>
+                <p>Business data is updated quarterly based on official industry reports and financial statements.</p>
+                <h4>Disclaimer</h4>
+                <p>All figures are estimates based on publicly available data and industry analysis.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Timeline</h4>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Charts</h4>
+                    <ul>
+                        <li><a href="charts.html">Hot 100</a></li>
+                        <li><a href="videos.html">Top Videos</a></li>
+                        <li><a href="richest.html">Richest People</a></li>
+                        <li><a href="business.html">Business Charts</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Follow Us</h4>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Timeline.co.zw. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/business.js"></script>
+    <script src="js/animations.js"></script>
+</body>
+</html>

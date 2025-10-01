@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Awards - Timeline.co.zw</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/awards.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-top">
+            <div class="container">
+                <div class="header-top-content">
+                    <div class="logo">
+                        <i class="fas fa-music"></i>
+                        <span>timeline</span>
+                    </div>
+                    <nav class="main-nav">
+                        <a href="index.html" class="nav-link">Home</a>
+                        <a href="charts.html" class="nav-link">Charts</a>
+                        <a href="videos.html" class="nav-link">Videos</a>
+                        <a href="richest.html" class="nav-link">Richest</a>
+                        <a href="awards.html" class="nav-link active">Awards</a>
+                        <a href="business.html" class="nav-link">Business</a>
+                    </nav>
+                    <div class="header-actions">
+                        <button class="subscribe-btn">SUBSCRIBE</button>
+                        <button class="login-btn">LOGIN</button>
+                        <button class="search-btn"><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="header-bottom">
+            <div class="container">
+                <div class="chart-nav">
+                    <a href="awards.html" class="chart-nav-link active">MUSIC AWARDS</a>
+                    <a href="awards.html" class="chart-nav-link">GRAMMY AWARDS</a>
+                    <a href="awards.html" class="chart-nav-link">MTV AWARDS</a>
+                    <a href="awards.html" class="chart-nav-link">BILLBOARD AWARDS</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Awards Header -->
+    <section class="awards-header">
+        <div class="container">
+            <div class="awards-title-section">
+                <h1 class="awards-title">MUSIC AWARDS</h1>
+                <div class="awards-controls">
+                    <div class="year-selector">
+                        <button class="year-btn">
+                            <i class="fas fa-calendar"></i>
+                            2025 AWARDS
+                        </button>
+                    </div>
+                    <div class="awards-actions">
+                        <button class="action-btn" title="Previous Year">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <button class="action-btn" title="Awards Info">
+                            <i class="fas fa-info-circle"></i>
+                        </button>
+                        <button class="action-btn" title="Share Awards">
+                            <i class="fas fa-share-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Awards Filters -->
+    <section class="awards-filters">
+        <div class="container">
+            <div class="filter-tabs">
+                <button class="filter-tab active" data-filter="all">All Awards</button>
+                <button class="filter-tab" data-filter="grammy">Grammy Awards</button>
+                <button class="filter-tab" data-filter="mtv">MTV Awards</button>
+                <button class="filter-tab" data-filter="billboard">Billboard Awards</button>
+            </div>
+            <div class="filter-options">
+                <select class="category-filter">
+                    <option value="all">All Categories</option>
+                    <option value="album">Album of the Year</option>
+                    <option value="song">Song of the Year</option>
+                    <option value="record">Record of the Year</option>
+                    <option value="artist">Best New Artist</option>
+                </select>
+                <button class="sort-btn">
+                    <i class="fas fa-sort"></i>
+                    Sort by Date
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Award -->
+    <section class="featured-award">
+        <div class="container">
+            <div class="featured-content">
+                <div class="award-showcase">
+                    <div class="award-trophy">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <div class="award-info">
+                        <div class="award-badge">GRAMMY 2025</div>
+                        <h2 class="award-title">Album of the Year</h2>
+                        <div class="winner-info">
+                            <h3 class="winner-name">Taylor Swift - Midnights</h3>
+                            <p class="winner-description">Taylor Swift's critically acclaimed album "Midnights" takes home the prestigious Album of the Year award at the 2025 Grammy Awards.</p>
+                        </div>
+                        <div class="award-stats">
+                            <div class="stat">
+                                <i class="fas fa-calendar"></i>
+                                <span>February 2, 2025</span>
+                            </div>
+                            <div class="stat">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Crypto.com Arena, LA</span>
+                            </div>
+                            <div class="stat">
+                                <i class="fas fa-users"></i>
+                                <span>67th Annual</span>
+                            </div>
+                        </div>
+                        <div class="award-actions">
+                            <button class="btn btn-primary">
+                                <i class="fas fa-play"></i>
+                                Watch Ceremony
+                            </button>
+                            <button class="btn btn-secondary">
+                                <i class="fas fa-heart"></i>
+                                Save Award
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Awards Categories -->
+    <section class="awards-categories">
+        <div class="container">
+            <h2 class="section-title">Award Categories</h2>
+            <div class="categories-grid" id="categories-grid">
+                <!-- Categories will be populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Recent Winners -->
+    <section class="recent-winners">
+        <div class="container">
+            <h2 class="section-title">Recent Winners</h2>
+            <div class="winners-timeline" id="winners-timeline">
+                <!-- Winners will be populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Award Modal -->
+    <div class="modal" id="award-modal">
+        <div class="modal-content award-modal-content">
+            <div class="modal-header">
+                <h3 id="modal-award-title">Award Title</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-award-info">
+                    <div class="modal-winner">
+                        <h4>Winner</h4>
+                        <p id="modal-winner-name">Winner Name</p>
+                    </div>
+                    <div class="modal-nominees">
+                        <h4>Nominees</h4>
+                        <ul id="modal-nominees-list">
+                            <!-- Nominees will be populated -->
+                        </ul>
+                    </div>
+                    <div class="modal-details">
+                        <h4>Details</h4>
+                        <p id="modal-award-description">Award description will appear here.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Timeline</h4>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Charts</h4>
+                    <ul>
+                        <li><a href="charts.html">Hot 100</a></li>
+                        <li><a href="videos.html">Top Videos</a></li>
+                        <li><a href="richest.html">Richest People</a></li>
+                        <li><a href="business.html">Business Charts</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Follow Us</h4>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Timeline.co.zw. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/awards.js"></script>
+    <script src="js/animations.js"></script>
+</body>
+</html>

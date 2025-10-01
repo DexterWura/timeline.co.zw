@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Test - Timeline.co.zw</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 40px;
+        }
+        .test-section {
+            background: white;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .test-section h2 {
+            color: #00d4aa;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #00d4aa;
+            padding-bottom: 10px;
+        }
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .image-item {
+            text-align: center;
+            padding: 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+        }
+        .image-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        .image-item img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 10px;
+        }
+        .image-item h3 {
+            font-size: 0.9rem;
+            margin: 5px 0;
+            color: #333;
+        }
+        .image-item p {
+            font-size: 0.8rem;
+            color: #666;
+            margin: 0;
+        }
+        .album-artwork {
+            width: 120px;
+            height: 120px;
+            border-radius: 10px;
+            object-fit: cover;
+        }
+        .video-thumbnail {
+            width: 200px;
+            height: 120px;
+            border-radius: 10px;
+            object-fit: cover;
+        }
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #00d4aa;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🖼️ Real Images Test - Timeline.co.zw</h1>
+        
+        <div class="test-section">
+            <h2>👑 Billionaire Photos</h2>
+            <div class="loading">
+                <div class="loading-spinner"></div>
+                <p>Loading billionaire photos...</p>
+            </div>
+            <div class="image-grid" id="billionaires-grid" style="display: none;">
+                <!-- Billionaire photos will be loaded here -->
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>🎵 Album Artwork</h2>
+            <div class="loading">
+                <div class="loading-spinner"></div>
+                <p>Loading album artwork...</p>
+            </div>
+            <div class="image-grid" id="albums-grid" style="display: none;">
+                <!-- Album artwork will be loaded here -->
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>🎬 Video Thumbnails</h2>
+            <div class="loading">
+                <div class="loading-spinner"></div>
+                <p>Loading video thumbnails...</p>
+            </div>
+            <div class="image-grid" id="videos-grid" style="display: none;">
+                <!-- Video thumbnails will be loaded here -->
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>🎤 Artist Photos</h2>
+            <div class="loading">
+                <div class="loading-spinner"></div>
+                <p>Loading artist photos...</p>
+            </div>
+            <div class="image-grid" id="artists-grid" style="display: none;">
+                <!-- Artist photos will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="js/imageService.js"></script>
+    <script>
+        // Test data
+        const billionaires = [
+            'Elon Musk', 'Jeff Bezos', 'Bill Gates', 'Warren Buffett', 'Mark Zuckerberg',
+            'Larry Page', 'Sergey Brin', 'Steve Ballmer', 'Larry Ellison', 'Mukesh Ambani'
+        ];
+
+        const albums = [
+            'Golden', 'Ordinary', 'Soda', 'Midnight', 'Sunset',
+            'Dreams', 'Reality', 'Fantasy', 'Echo', 'Silence'
+        ];
+
+        const videos = [
+            'Golden - Official Music Video', 'Ordinary - Live Performance', 'Soda - Lyric Video',
+            'Midnight - Behind the Scenes', 'Sunset - Acoustic Version', 'Dreams - Dance Challenge',
+            'Reality - Concert Clip', 'Fantasy - Music Video', 'Echo - Live Session', 'Silence - Official Video'
+        ];
+
+        const artists = [
+            'Taylor Swift', 'Drake', 'Ariana Grande', 'The Weeknd', 'Billie Eilish',
+            'Post Malone', 'Dua Lipa', 'Ed Sheeran', 'Justin Bieber', 'Olivia Rodrigo'
+        ];
+
+        // Load billionaire photos
+        async function loadBillionairePhotos() {
+            const grid = document.getElementById('billionaires-grid');
+            const loading = grid.previousElementSibling;
+            
+            for (const name of billionaires) {
+                const photoUrl = await window.imageService.getBillionairePhoto(name);
+                const item = document.createElement('div');
+                item.className = 'image-item';
+                item.innerHTML = `
+                    <img src="${photoUrl}" alt="${name}" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&size=200&background=00d4aa&color=fff&bold=true'">
+                    <h3>${name}</h3>
+                    <p>Billionaire</p>
+                `;
+                grid.appendChild(item);
+            }
+            
+            loading.style.display = 'none';
+            grid.style.display = 'grid';
+        }
+
+        // Load album artwork
+        async function loadAlbumArtwork() {
+            const grid = document.getElementById('albums-grid');
+            const loading = grid.previousElementSibling;
+            
+            for (const album of albums) {
+                const artworkUrl = await window.imageService.getAlbumArtwork(album);
+                const item = document.createElement('div');
+                item.className = 'image-item';
+                item.innerHTML = `
+                    <img src="${artworkUrl}" alt="${album}" class="album-artwork" onerror="this.src='https://via.placeholder.com/200x200/00d4aa/ffffff?text=${album.substring(0, 2).toUpperCase()}'">
+                    <h3>${album}</h3>
+                    <p>Album</p>
+                `;
+                grid.appendChild(item);
+            }
+            
+            loading.style.display = 'none';
+            grid.style.display = 'grid';
+        }
+
+        // Load video thumbnails
+        async function loadVideoThumbnails() {
+            const grid = document.getElementById('videos-grid');
+            const loading = grid.previousElementSibling;
+            
+            for (const video of videos) {
+                const thumbnailUrl = await window.imageService.getVideoThumbnail(video);
+                const item = document.createElement('div');
+                item.className = 'image-item';
+                item.innerHTML = `
+                    <img src="${thumbnailUrl}" alt="${video}" class="video-thumbnail" onerror="this.src='https://via.placeholder.com/300x200/00d4aa/ffffff?text=${video.substring(0, 10)}'">
+                    <h3>${video}</h3>
+                    <p>Music Video</p>
+                `;
+                grid.appendChild(item);
+            }
+            
+            loading.style.display = 'none';
+            grid.style.display = 'grid';
+        }
+
+        // Load artist photos
+        async function loadArtistPhotos() {
+            const grid = document.getElementById('artists-grid');
+            const loading = grid.previousElementSibling;
+            
+            for (const artist of artists) {
+                const photoUrl = await window.imageService.getArtistPhoto(artist);
+                const item = document.createElement('div');
+                item.className = 'image-item';
+                item.innerHTML = `
+                    <img src="${photoUrl}" alt="${artist}" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(artist)}&size=200&background=667eea&color=fff&bold=true'">
+                    <h3>${artist}</h3>
+                    <p>Artist</p>
+                `;
+                grid.appendChild(item);
+            }
+            
+            loading.style.display = 'none';
+            grid.style.display = 'grid';
+        }
+
+        // Initialize the test page
+        document.addEventListener('DOMContentLoaded', async function() {
+            console.log('Starting image tests...');
+            
+            try {
+                await Promise.all([
+                    loadBillionairePhotos(),
+                    loadAlbumArtwork(),
+                    loadVideoThumbnails(),
+                    loadArtistPhotos()
+                ]);
+                
+                console.log('All images loaded successfully!');
+            } catch (error) {
+                console.error('Error loading images:', error);
+            }
+        });
+    </script>
+</body>
+</html>
