@@ -1,0 +1,669 @@
+/* Richest People Page Specific Styles */
+
+/* Richest Header */
+.richest-header {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    color: white;
+    padding: 40px 0;
+}
+
+.richest-title-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.richest-title {
+    font-size: 3rem;
+    font-weight: 800;
+    margin: 0;
+    background: linear-gradient(45deg, #00d4aa, #00b894);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.richest-controls {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.date-selector {
+    position: relative;
+}
+
+.date-btn {
+    background: white;
+    color: #333;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+}
+
+.date-btn:hover {
+    background: #f0f0f0;
+    transform: translateY(-2px);
+}
+
+.richest-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.action-btn {
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.action-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.1);
+}
+
+/* Richest Filters */
+.richest-filters {
+    background: white;
+    padding: 20px 0;
+    border-bottom: 1px solid #eee;
+    position: sticky;
+    top: 120px;
+    z-index: 100;
+}
+
+.richest-filters .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.filter-tabs {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.filter-tab {
+    padding: 10px 20px;
+    background: transparent;
+    border: 2px solid #eee;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    color: #666;
+}
+
+.filter-tab:hover,
+.filter-tab.active {
+    background: #00d4aa;
+    border-color: #00d4aa;
+    color: white;
+}
+
+.filter-options {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.country-filter {
+    padding: 10px 15px;
+    border: 2px solid #eee;
+    border-radius: 8px;
+    background: white;
+    font-weight: 500;
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+}
+
+.country-filter:focus {
+    outline: none;
+    border-color: #00d4aa;
+}
+
+.sort-btn {
+    padding: 10px 15px;
+    background: #f8f9fa;
+    border: 2px solid #eee;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.sort-btn:hover {
+    background: #00d4aa;
+    border-color: #00d4aa;
+    color: white;
+}
+
+/* Top Billionaires */
+.top-billionaires {
+    background: white;
+    padding: 60px 0;
+}
+
+.billionaires-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 30px;
+}
+
+.billionaire-card.featured {
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid #f0f0f0;
+}
+
+.billionaire-card.featured:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+}
+
+.billionaire-card.featured.rank-1 {
+    border-top: 5px solid #00d4aa;
+}
+
+.billionaire-card.featured.rank-2 {
+    border-top: 5px solid #667eea;
+}
+
+.billionaire-card.featured.rank-3 {
+    border-top: 5px solid #764ba2;
+}
+
+.rank-badge {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #00d4aa, #00b894);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 1.3rem;
+    box-shadow: 0 5px 15px rgba(0, 212, 170, 0.3);
+}
+
+.billionaire-photo {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 25px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 4px solid #f0f0f0;
+}
+
+.photo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.wealth-indicator {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    width: 30px;
+    height: 30px;
+    background: #00d4aa;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    border: 3px solid white;
+}
+
+.billionaire-info {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.billionaire-name {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #1a1a1a;
+}
+
+.billionaire-source {
+    color: #666;
+    font-size: 1rem;
+    margin-bottom: 15px;
+}
+
+.net-worth {
+    margin-bottom: 20px;
+}
+
+.worth-amount {
+    display: block;
+    font-size: 2rem;
+    font-weight: 800;
+    color: #00d4aa;
+    margin-bottom: 5px;
+}
+
+.worth-change {
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 15px;
+}
+
+.worth-change.positive {
+    background: rgba(0, 212, 170, 0.1);
+    color: #00d4aa;
+}
+
+.worth-change.negative {
+    background: rgba(231, 76, 60, 0.1);
+    color: #e74c3c;
+}
+
+.billionaire-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.stat {
+    text-align: center;
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: 10px;
+}
+
+.stat-label {
+    display: block;
+    font-size: 0.75rem;
+    color: #999;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+}
+
+.stat-value {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+.billionaire-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.billionaire-actions .action-btn {
+    width: 45px;
+    height: 45px;
+    background: #f8f9fa;
+    color: #666;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.billionaire-actions .action-btn:hover {
+    background: #00d4aa;
+    color: white;
+    transform: scale(1.1);
+}
+
+/* Billionaires List */
+.billionaires-list {
+    background: #f8f9fa;
+    padding: 40px 0;
+    min-height: 100vh;
+}
+
+.billionaires-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+}
+
+.billionaire-item {
+    display: flex;
+    align-items: center;
+    padding: 25px;
+    border-bottom: 1px solid #f0f0f0;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.billionaire-item:last-child {
+    border-bottom: none;
+}
+
+.billionaire-item:hover {
+    background: #f8f9fa;
+    transform: translateX(5px);
+}
+
+.billionaire-item .rank-badge {
+    position: static;
+    width: 40px;
+    height: 40px;
+    background: #f0f0f0;
+    color: #666;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    margin-right: 25px;
+    flex-shrink: 0;
+    box-shadow: none;
+}
+
+.billionaire-item .billionaire-photo {
+    width: 60px;
+    height: 60px;
+    margin: 0 25px 0 0;
+    border-radius: 50%;
+    flex-shrink: 0;
+    border: 2px solid #f0f0f0;
+}
+
+.billionaire-item .billionaire-info {
+    flex: 1;
+    text-align: left;
+    margin: 0;
+}
+
+.billionaire-item .billionaire-name {
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+}
+
+.billionaire-item .billionaire-source {
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+}
+
+.billionaire-item .net-worth {
+    margin: 0;
+}
+
+.billionaire-item .worth-amount {
+    font-size: 1.3rem;
+    margin-bottom: 3px;
+}
+
+.billionaire-item .worth-change {
+    font-size: 0.8rem;
+    padding: 2px 8px;
+}
+
+.billionaire-item .billionaire-stats {
+    margin: 0 25px 0 0;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.billionaire-item .stat {
+    padding: 8px;
+    background: transparent;
+    border: 1px solid #f0f0f0;
+    border-radius: 6px;
+}
+
+.billionaire-item .stat-label {
+    font-size: 0.7rem;
+}
+
+.billionaire-item .stat-value {
+    font-size: 0.8rem;
+}
+
+.billionaire-item .billionaire-actions {
+    flex-shrink: 0;
+}
+
+.billionaire-item .billionaire-actions .action-btn {
+    width: 35px;
+    height: 35px;
+    margin: 0 5px;
+}
+
+/* Wealth Change Indicators */
+.billionaire-item.wealth-gain::before {
+    content: '↑';
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: #00d4aa;
+    color: white;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.billionaire-item.wealth-loss::before {
+    content: '↓';
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: #e74c3c;
+    color: white;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 15px;
+    max-width: 500px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.modal-header h3 {
+    margin: 0;
+    color: #1a1a1a;
+}
+
+.close-modal {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #666;
+    transition: color 0.3s ease;
+}
+
+.close-modal:hover {
+    color: #00d4aa;
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+.modal-body h4 {
+    color: #1a1a1a;
+    margin-bottom: 10px;
+}
+
+.modal-body ul {
+    margin-bottom: 20px;
+    padding-left: 20px;
+}
+
+.modal-body li {
+    margin-bottom: 5px;
+    color: #666;
+}
+
+/* Loading States */
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #00d4aa;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .richest-title {
+        font-size: 2rem;
+    }
+    
+    .richest-title-section {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .richest-controls {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .billionaires-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .billionaire-item {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+    }
+    
+    .billionaire-item .rank-badge {
+        margin-right: 0;
+    }
+    
+    .billionaire-item .billionaire-photo {
+        margin: 0;
+    }
+    
+    .billionaire-item .billionaire-info {
+        text-align: center;
+    }
+    
+    .billionaire-item .billionaire-stats {
+        margin: 0;
+    }
+    
+    .filter-tabs {
+        flex-wrap: wrap;
+    }
+    
+    .richest-filters .container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
+
+@media (max-width: 480px) {
+    .billionaire-card.featured {
+        padding: 25px;
+    }
+    
+    .billionaire-item {
+        padding: 20px;
+    }
+    
+    .modal-content {
+        width: 95%;
+        margin: 20px;
+    }
+    
+    .billionaire-stats {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+}

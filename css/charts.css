@@ -1,0 +1,643 @@
+/* Charts Page Specific Styles */
+
+/* Chart Header */
+.chart-header {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    color: white;
+    padding: 40px 0;
+}
+
+.chart-title-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.chart-title {
+    font-size: 3rem;
+    font-weight: 800;
+    margin: 0;
+    background: linear-gradient(45deg, #00d4aa, #00b894);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.chart-controls {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.date-selector {
+    position: relative;
+}
+
+.date-btn {
+    background: white;
+    color: #333;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+}
+
+.date-btn:hover {
+    background: #f0f0f0;
+    transform: translateY(-2px);
+}
+
+.chart-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.action-btn {
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.action-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.1);
+}
+
+/* Chart Filters */
+.chart-filters {
+    background: white;
+    padding: 20px 0;
+    border-bottom: 1px solid #eee;
+    position: sticky;
+    top: 120px;
+    z-index: 100;
+}
+
+.chart-filters .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.filter-tabs {
+    display: flex;
+    gap: 10px;
+}
+
+.filter-tab {
+    padding: 10px 20px;
+    background: transparent;
+    border: 2px solid #eee;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    color: #666;
+}
+
+.filter-tab:hover,
+.filter-tab.active {
+    background: #00d4aa;
+    border-color: #00d4aa;
+    color: white;
+}
+
+.filter-options {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.genre-filter {
+    padding: 10px 15px;
+    border: 2px solid #eee;
+    border-radius: 8px;
+    background: white;
+    font-weight: 500;
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+}
+
+.genre-filter:focus {
+    outline: none;
+    border-color: #00d4aa;
+}
+
+.sort-btn {
+    padding: 10px 15px;
+    background: #f8f9fa;
+    border: 2px solid #eee;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.sort-btn:hover {
+    background: #00d4aa;
+    border-color: #00d4aa;
+    color: white;
+}
+
+/* Chart List */
+.chart-list {
+    background: #f8f9fa;
+    min-height: 100vh;
+    padding: 40px 0;
+}
+
+.chart-container {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+/* Top Three Featured */
+.top-three {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+.chart-item.featured {
+    background: white;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.chart-item.featured:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+}
+
+.chart-item.featured.rank-1 {
+    border-top: 4px solid #00d4aa;
+}
+
+.chart-item.featured.rank-2 {
+    border-top: 4px solid #667eea;
+}
+
+.chart-item.featured.rank-3 {
+    border-top: 4px solid #764ba2;
+}
+
+.rank-number {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, #00d4aa, #00b894);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.2rem;
+}
+
+.song-artwork {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.artwork-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.play-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.song-artwork:hover .play-overlay {
+    opacity: 1;
+}
+
+.play-btn {
+    width: 40px;
+    height: 40px;
+    background: #00d4aa;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.play-btn:hover {
+    background: #00b894;
+    transform: scale(1.1);
+}
+
+.song-info {
+    margin-bottom: 20px;
+}
+
+.song-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #1a1a1a;
+}
+
+.artist-name {
+    color: #666;
+    margin-bottom: 10px;
+    font-size: 0.95rem;
+}
+
+.song-stats {
+    display: flex;
+    gap: 15px;
+    font-size: 0.85rem;
+}
+
+.weeks-on-chart {
+    color: #00d4aa;
+    font-weight: 500;
+}
+
+.peak-position {
+    color: #666;
+}
+
+.chart-metrics {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.metric {
+    text-align: center;
+}
+
+.metric-label {
+    display: block;
+    font-size: 0.75rem;
+    color: #999;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+}
+
+.metric-value {
+    display: block;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #1a1a1a;
+}
+
+.song-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.song-actions .action-btn {
+    width: 35px;
+    height: 35px;
+    background: #f8f9fa;
+    color: #666;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.song-actions .action-btn:hover {
+    background: #00d4aa;
+    color: white;
+    transform: scale(1.1);
+}
+
+/* Chart Items 4-100 */
+.chart-items {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+}
+
+.chart-item {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid #f0f0f0;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.chart-item:last-child {
+    border-bottom: none;
+}
+
+.chart-item:hover {
+    background: #f8f9fa;
+    transform: translateX(5px);
+}
+
+.chart-item .rank-number {
+    position: static;
+    width: 35px;
+    height: 35px;
+    background: #f0f0f0;
+    color: #666;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    margin-right: 20px;
+    flex-shrink: 0;
+}
+
+.chart-item .song-artwork {
+    width: 50px;
+    height: 50px;
+    margin: 0 20px 0 0;
+    border-radius: 8px;
+    flex-shrink: 0;
+}
+
+.chart-item .song-info {
+    flex: 1;
+    margin: 0;
+}
+
+.chart-item .song-title {
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+}
+
+.chart-item .artist-name {
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+}
+
+.chart-item .song-stats {
+    font-size: 0.8rem;
+}
+
+.chart-item .chart-metrics {
+    margin: 0 20px 0 0;
+    gap: 15px;
+}
+
+.chart-item .metric {
+    min-width: 40px;
+}
+
+.chart-item .metric-label {
+    font-size: 0.7rem;
+}
+
+.chart-item .metric-value {
+    font-size: 0.9rem;
+}
+
+.chart-item .song-actions {
+    flex-shrink: 0;
+}
+
+/* Chart Status Indicators */
+.chart-item.new::before {
+    content: 'NEW';
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #00d4aa;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.7rem;
+    font-weight: 600;
+}
+
+.chart-item.re-entry::before {
+    content: 'RE-ENTRY';
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #667eea;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.7rem;
+    font-weight: 600;
+}
+
+.chart-item.gains::before {
+    content: '↑';
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #00d4aa;
+    color: white;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 15px;
+    max-width: 500px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.modal-header h3 {
+    margin: 0;
+    color: #1a1a1a;
+}
+
+.close-modal {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #666;
+    transition: color 0.3s ease;
+}
+
+.close-modal:hover {
+    color: #00d4aa;
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+.modal-body h4 {
+    color: #1a1a1a;
+    margin-bottom: 10px;
+}
+
+.modal-body ul {
+    margin-bottom: 20px;
+    padding-left: 20px;
+}
+
+.modal-body li {
+    margin-bottom: 5px;
+    color: #666;
+}
+
+/* Loading States */
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #00d4aa;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .chart-title {
+        font-size: 2rem;
+    }
+    
+    .chart-title-section {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .chart-controls {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .top-three {
+        grid-template-columns: 1fr;
+    }
+    
+    .chart-item {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+    }
+    
+    .chart-item .rank-number {
+        margin-right: 0;
+    }
+    
+    .chart-item .song-artwork {
+        margin: 0;
+    }
+    
+    .chart-item .chart-metrics {
+        margin: 0;
+    }
+    
+    .filter-tabs {
+        flex-wrap: wrap;
+    }
+    
+    .chart-filters .container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
+
+@media (max-width: 480px) {
+    .chart-item.featured {
+        padding: 20px;
+    }
+    
+    .chart-item {
+        padding: 15px;
+    }
+    
+    .modal-content {
+        width: 95%;
+        margin: 20px;
+    }
+}

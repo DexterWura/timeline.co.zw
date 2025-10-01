@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 60" width="200" height="60">
+  <defs>
+    <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#00d4aa;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#00b894;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Music Note Icon -->
+  <circle cx="25" cy="30" r="8" fill="url(#logoGradient)"/>
+  <rect x="30" y="15" width="3" height="25" fill="url(#logoGradient)"/>
+  <path d="M33 15 Q38 10 43 15 Q38 20 33 15" fill="url(#logoGradient)"/>
+  
+  <!-- Timeline Text -->
+  <text x="55" y="25" font-family="Inter, sans-serif" font-size="18" font-weight="700" fill="#1a1a1a">timeline</text>
+  <text x="55" y="40" font-family="Inter, sans-serif" font-size="8" font-weight="400" fill="#666">.co.zw</text>
+</svg>

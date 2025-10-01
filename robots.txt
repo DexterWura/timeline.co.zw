@@ -1,0 +1,27 @@
+User-agent: *
+Allow: /
+
+# Disallow access to sensitive directories
+Disallow: /api/
+Disallow: /config/
+Disallow: /includes/
+Disallow: /cache/
+
+# Allow access to main pages
+Allow: /index.php
+Allow: /charts.php
+Allow: /videos.php
+Allow: /richest.php
+Allow: /awards.php
+Allow: /business.php
+
+# Allow access to static assets
+Allow: /css/
+Allow: /js/
+Allow: /images/
+
+# Sitemap location
+Sitemap: https://timeline.co.zw/sitemap.xml
+
+# Crawl delay (be respectful)
+Crawl-delay: 1
