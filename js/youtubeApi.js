@@ -1,8 +1,8 @@
 // YouTube Data API v3 Service
 class YouTubeApiService {
     constructor() {
-        this.apiKey = window.YOUTUBE_API_KEY || 'YOUR_YOUTUBE_API_KEY';
-        this.baseUrl = 'https://www.googleapis.com/youtube/v3';
+        this.apiEnabled = window.YOUTUBE_API_ENABLED || false;
+        this.proxyUrl = 'api/youtube-proxy.php';
         this.cache = new Map();
         this.cacheTimeout = 10 * 60 * 1000; // 10 minutes cache
         this.retryAttempts = 3;
@@ -28,6 +28,10 @@ class YouTubeApiService {
 
     // Get trending videos for a specific region
     async getTrendingVideos(region = null, category = '10', maxResults = 50) {
+        if (!this.apiEnabled) {
+            throw new Error('YouTube API not configured. Please run the installation wizard.');
+        }
+
         const regionCode = region || this.userRegion;
         const cacheKey = `trending_${regionCode}_${category}_${maxResults}`;
         const cached = this.getCachedData(cacheKey);
@@ -36,16 +40,17 @@ class YouTubeApiService {
         }
 
         try {
-            const params = new URLSearchParams({
-                part: 'snippet,statistics,contentDetails',
-                chart: 'mostPopular',
-                regionCode: regionCode,
-                videoCategoryId: category,
-                maxResults: maxResults.toString(),
-                key: this.apiKey
+            const response = await this.fetchWithRetry(this.proxyUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    action: 'trending',
+                    region: regionCode,
+                    maxResults: maxResults
+                })
             });
-
-            const response = await this.fetchWithRetry(`${this.baseUrl}/videos?${params}`);
             const data = await response.json();
             
             if (data.error) {
@@ -64,9 +69,43 @@ class YouTubeApiService {
 
     // Get trending music videos
     async getTrendingMusic(region = null, maxResults = 50) {
+        if (!this.apiEnabled) {
+            throw new Error('YouTube API not configured. Please run the installation wizard.');
+        }
+
         const regionCode = region || this.userRegion;
-        const category = this.musicCategories[regionCode] || '10';
-        return this.getTrendingVideos(regionCode, category, maxResults);
+        const cacheKey = `trending_music_${regionCode}_${maxResults}`;
+        const cached = this.getCachedData(cacheKey);
+        if (cached) {
+            return cached;
+        }
+
+        try {
+            const response = await this.fetchWithRetry(this.proxyUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    action: 'trending_music',
+                    region: regionCode,
+                    maxResults: maxResults
+                })
+            });
+            const data = await response.json();
+            
+            if (data.error) {
+                throw new Error(data.error.message);
+            }
+
+            const processedData = this.processVideoData(data.items || []);
+            this.setCachedData(cacheKey, processedData);
+            
+            return processedData;
+        } catch (error) {
+            console.error('Error fetching trending music:', error);
+            throw error;
+        }
     }
 
     // Search for videos by query
@@ -327,16 +366,20 @@ class YouTubeApiService {
     }
 
     // Fetch with retry logic
-    async fetchWithRetry(url, attempt = 1) {
+    async fetchWithRetry(url, options = {}, attempt = 1) {
         try {
-            const response = await fetch(url, {
+            const defaultOptions = {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
                 mode: 'cors'
-            });
+            };
+
+            const fetchOptions = { ...defaultOptions, ...options };
+
+            const response = await fetch(url, fetchOptions);
 
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
@@ -347,7 +390,7 @@ class YouTubeApiService {
             if (attempt < this.retryAttempts) {
                 console.warn(`YouTube API attempt ${attempt} failed, retrying in ${this.retryDelay}ms...`);
                 await this.delay(this.retryDelay * attempt);
-                return this.fetchWithRetry(url, attempt + 1);
+                return this.fetchWithRetry(url, options, attempt + 1);
             }
             throw error;
         }

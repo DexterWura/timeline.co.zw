@@ -12,9 +12,10 @@ Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
 RewriteCond %{HTTPS} off
 RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
-# Remove .php extension from URLs
+# Remove .php extension from URLs (except install and diagnose)
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_URI} !^/(install|diagnose)
 RewriteRule ^([^/]+)/?$ $1.php [L,QSA]
 
 # API routes

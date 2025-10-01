@@ -85,19 +85,21 @@ $og_image = isset($og_image) ? $og_image : 'https://timeline.co.zw/images/og-ima
     }
     </script>
     
-    <!-- Google Analytics (replace with your tracking ID) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+    <!-- Google Analytics -->
+    <?php if (isset($_ENV['GOOGLE_ANALYTICS_ID']) && !empty($_ENV['GOOGLE_ANALYTICS_ID'])): ?>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=<?php echo htmlspecialchars($_ENV['GOOGLE_ANALYTICS_ID']); ?>"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-        gtag('config', 'GA_MEASUREMENT_ID');
+        gtag('config', '<?php echo htmlspecialchars($_ENV['GOOGLE_ANALYTICS_ID']); ?>');
     </script>
+    <?php endif; ?>
     
     <!-- YouTube API Configuration -->
     <script>
-        // YouTube API Configuration
-        window.YOUTUBE_API_KEY = '<?php echo isset($_ENV['YOUTUBE_API_KEY']) ? $_ENV['YOUTUBE_API_KEY'] : 'YOUR_YOUTUBE_API_KEY'; ?>';
+        // YouTube API Configuration - Now using server-side proxy for security
+        window.YOUTUBE_API_ENABLED = <?php echo isset($_ENV['YOUTUBE_API_KEY']) && !empty($_ENV['YOUTUBE_API_KEY']) ? 'true' : 'false'; ?>;
         window.DEFAULT_REGION = '<?php echo isset($_ENV['DEFAULT_REGION']) ? $_ENV['DEFAULT_REGION'] : 'ZW'; ?>'; // Zimbabwe
         window.DEFAULT_LANGUAGE = '<?php echo isset($_ENV['DEFAULT_LANGUAGE']) ? $_ENV['DEFAULT_LANGUAGE'] : 'en'; ?>';
         
