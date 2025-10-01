@@ -2,6 +2,17 @@
 // Installation Wizard for Timeline.co.zw
 session_start();
 
+// Ensure required directories exist
+if (!is_dir('config')) {
+    @mkdir('config', 0755, true);
+}
+if (!is_dir('cache')) {
+    @mkdir('cache', 0755, true);
+}
+if (!is_dir('logs')) {
+    @mkdir('logs', 0755, true);
+}
+
 // Check if already installed
 if (file_exists('.env') && file_exists('config/installed.lock')) {
     header('Location: index.php');
