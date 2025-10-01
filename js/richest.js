@@ -8,6 +8,7 @@ async function initRichestPage() {
     initFilters();
     initModal();
     initRichestInteractions();
+    initRealTimeUpdates();
 }
 
 // Load and display richest people data
@@ -16,16 +17,105 @@ async function loadRichestData() {
     if (!richestContainer) return;
     
     // Show loading state
-    richestContainer.innerHTML = '<div class="loading"><div class="loading-spinner"></div></div>';
+    richestContainer.innerHTML = '<div class="loading"><div class="loading-spinner"></div><p>Loading real-time billionaire data...</p></div>';
     
     try {
-        // Simulate API call
-        const richestData = await fetchChartData('richest');
-        displayRichestPeople(richestData.slice(3)); // Skip first 3 (featured)
+        // Fetch real-time data from API
+        console.log('Fetching real-time billionaire data...');
+        const realData = await window.billionaireApi.getLatestBillionaires(100);
+        
+        if (realData && realData.length > 0) {
+            console.log(`Successfully loaded ${realData.length} billionaires from API`);
+            
+            // Display the real data (skip first 3 for featured section)
+            displayRichestPeople(realData.slice(3));
+            
+            // Update featured billionaires (top 3)
+            updateFeaturedBillionaires(realData.slice(0, 3));
+            
+            // Show success message
+            showNotification('Real-time billionaire data loaded successfully!', 'success');
+            
+        } else {
+            throw new Error('No data received from API');
+        }
+        
     } catch (error) {
-        console.error('Error loading richest data:', error);
-        richestContainer.innerHTML = '<div class="error">Failed to load richest people data. Please try again.</div>';
+        console.error('Error loading real-time billionaire data:', error);
+        
+        // Show error message instead of fallback
+        richestContainer.innerHTML = `
+            <div class="error-message">
+                <div class="error-icon">⚠️</div>
+                <h3>Unable to Load Real-Time Data</h3>
+                <p>The billionaire API is currently unavailable. This could be due to:</p>
+                <ul>
+                    <li>Network connectivity issues</li>
+                    <li>API service maintenance</li>
+                    <li>CORS restrictions</li>
+                </ul>
+                <div class="error-actions">
+                    <button onclick="location.reload()" class="retry-button">Retry</button>
+                    <button onclick="window.billionaireApi.clearCache(); location.reload()" class="clear-cache-button">Clear Cache & Retry</button>
+                </div>
+                <p class="error-note">Please check your internet connection and try again.</p>
+            </div>
+        `;
+        
+        showNotification('Failed to load real-time billionaire data. Please try again.', 'error');
     }
+}
+
+// Update featured billionaires (top 3)
+function updateFeaturedBillionaires(topThree) {
+    const featuredContainer = document.querySelector('.billionaires-grid');
+    if (!featuredContainer || !topThree || topThree.length === 0) return;
+    
+    const featuredItems = featuredContainer.querySelectorAll('.billionaire-card');
+    
+    topThree.forEach((person, index) => {
+        if (featuredItems[index]) {
+            const item = featuredItems[index];
+            
+            // Update rank
+            const rankElement = item.querySelector('.rank-badge');
+            if (rankElement) rankElement.textContent = person.rank || (index + 1);
+            
+            // Update name
+            const nameElement = item.querySelector('.billionaire-name');
+            if (nameElement) nameElement.textContent = person.name || 'Unknown';
+            
+            // Update net worth
+            const wealthElement = item.querySelector('.worth-amount');
+            if (wealthElement) {
+                const wealth = formatNetWorth(person.netWorth || person.netWorthRaw || 0);
+                wealthElement.textContent = `$${wealth}`;
+            }
+            
+            // Update source
+            const sourceElement = item.querySelector('.billionaire-source');
+            if (sourceElement) sourceElement.textContent = person.source || person.industry || 'Unknown';
+            
+            // Update photo
+            const photoElement = item.querySelector('.photo-img');
+            if (photoElement) {
+                photoElement.src = person.photo || `https://ui-avatars.com/api/?name=${encodeURIComponent(person.name)}&size=200&background=00d4aa&color=fff&bold=true`;
+                photoElement.alt = person.name || 'Billionaire';
+            }
+            
+            // Update country flag
+            const flagElement = item.querySelector('.country-flag');
+            if (flagElement) {
+                flagElement.className = `country-flag flag-${person.country || 'unknown'}`;
+            }
+            
+            // Update age
+            const ageElement = item.querySelector('.stat-value');
+            if (ageElement && person.age) {
+                ageElement.textContent = person.age;
+            }
+        }
+    });
 }
 
 function displayRichestPeople(people) {
@@ -52,9 +142,9 @@ function createRichestItem(person, rank) {
     const richestItem = document.createElement('div');
     richestItem.className = 'billionaire-item';
     richestItem.setAttribute('data-rank', rank);
-    richestItem.setAttribute('data-source', person.source || 'technology');
+    richestItem.setAttribute('data-source', person.sourceCategory || 'technology');
     richestItem.setAttribute('data-country', person.country || 'usa');
-    richestItem.setAttribute('data-networth', person.netWorth);
+    richestItem.setAttribute('data-networth', person.netWorth || person.netWorthRaw || 0);
     
     // Add wealth change class
     if (person.wealthChange > 0) {
@@ -63,37 +153,41 @@ function createRichestItem(person, rank) {
         richestItem.classList.add('wealth-loss');
     }
     
+    // Get real photo or fallback
+    const photoUrl = person.photo || `https://ui-avatars.com/api/?name=${encodeURIComponent(person.name)}&size=200&background=00d4aa&color=fff&bold=true`;
+    
     richestItem.innerHTML = `
         <div class="rank-badge">${rank}</div>
         <div class="billionaire-photo">
-            <img src="${person.photo || `https://via.placeholder.com/60x60/${getRandomColor()}/ffffff?text=${person.name.split(' ').map(n => n[0]).join('')}`}" 
-                 alt="${person.name}" class="photo-img">
+            <img src="${photoUrl}" 
+                 alt="${person.name}" class="photo-img"
+                 onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(person.name)}&size=200&background=00d4aa&color=fff&bold=true'">
             <div class="wealth-indicator">
                 <i class="fas fa-chart-line"></i>
             </div>
         </div>
         <div class="billionaire-info">
-            <h3 class="billionaire-name">${person.name}</h3>
-            <p class="billionaire-source">${person.source}</p>
+            <h3 class="billionaire-name">${person.name || 'Unknown'}</h3>
+            <p class="billionaire-source">${person.source || 'Unknown'}</p>
             <div class="net-worth">
-                <span class="worth-amount">$${formatNetWorth(person.netWorth)}</span>
+                <span class="worth-amount">$${formatNetWorth(person.netWorth || person.netWorthRaw || 0)}</span>
                 <span class="worth-change ${person.wealthChange >= 0 ? 'positive' : 'negative'}">
-                    ${person.wealthChange >= 0 ? '+' : ''}$${formatNetWorth(Math.abs(person.wealthChange))}
+                    ${person.wealthChange >= 0 ? '+' : ''}$${formatNetWorth(Math.abs(person.wealthChange || 0))}
                 </span>
             </div>
         </div>
         <div class="billionaire-stats">
             <div class="stat">
                 <span class="stat-label">Age</span>
-                <span class="stat-value">${person.age}</span>
+                <span class="stat-value">${person.age || 'N/A'}</span>
             </div>
             <div class="stat">
                 <span class="stat-label">Country</span>
-                <span class="stat-value">${person.country.toUpperCase()}</span>
+                <span class="stat-value">${(person.country || 'unknown').toUpperCase()}</span>
             </div>
             <div class="stat">
                 <span class="stat-label">Source</span>
-                <span class="stat-value">${person.source}</span>
+                <span class="stat-value">${person.sourceCategory || 'Unknown'}</span>
             </div>
         </div>
         <div class="billionaire-actions">
@@ -339,6 +433,294 @@ function viewCompanies(personId) {
     console.log('Viewing companies:', personId);
     showNotification('Opening companies for: ' + personId);
     // Implement companies view functionality
+}
+
+// Notification system
+function showNotification(message, type = 'info') {
+    // Remove existing notifications
+    const existingNotifications = document.querySelectorAll('.notification');
+    existingNotifications.forEach(notification => notification.remove());
+    
+    // Create notification element
+    const notification = document.createElement('div');
+    notification.className = `notification notification-${type}`;
+    notification.innerHTML = `
+        <div class="notification-content">
+            <span class="notification-icon">
+                ${type === 'success' ? '✅' : type === 'warning' ? '⚠️' : type === 'error' ? '❌' : 'ℹ️'}
+            </span>
+            <span class="notification-message">${message}</span>
+            <button class="notification-close" onclick="this.parentElement.parentElement.remove()">×</button>
+        </div>
+    `;
+    
+    // Add styles if not already present
+    if (!document.querySelector('#notification-styles')) {
+        const styles = document.createElement('style');
+        styles.id = 'notification-styles';
+        styles.textContent = `
+            .notification {
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                z-index: 10000;
+                max-width: 400px;
+                padding: 15px 20px;
+                border-radius: 10px;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+                animation: slideInRight 0.3s ease-out;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            }
+            .notification-success {
+                background: linear-gradient(135deg, #00d4aa, #00b894);
+                color: white;
+            }
+            .notification-warning {
+                background: linear-gradient(135deg, #f39c12, #e67e22);
+                color: white;
+            }
+            .notification-error {
+                background: linear-gradient(135deg, #e74c3c, #c0392b);
+                color: white;
+            }
+            .notification-info {
+                background: linear-gradient(135deg, #3498db, #2980b9);
+                color: white;
+            }
+            .notification-content {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+            .notification-icon {
+                font-size: 1.2rem;
+            }
+            .notification-message {
+                flex: 1;
+                font-weight: 500;
+            }
+            .notification-close {
+                background: none;
+                border: none;
+                color: white;
+                font-size: 1.5rem;
+                cursor: pointer;
+                padding: 0;
+                width: 20px;
+                height: 20px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 50%;
+                transition: background-color 0.2s ease;
+            }
+            .notification-close:hover {
+                background-color: rgba(255,255,255,0.2);
+            }
+            @keyframes slideInRight {
+                from {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+        `;
+        document.head.appendChild(styles);
+    }
+    
+    // Add error message styles if not already present
+    if (!document.querySelector('#error-message-styles')) {
+        const errorStyles = document.createElement('style');
+        errorStyles.id = 'error-message-styles';
+        errorStyles.textContent = `
+            .error-message {
+                text-align: center;
+                padding: 40px 20px;
+                background: white;
+                border-radius: 15px;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+                max-width: 500px;
+                margin: 0 auto;
+            }
+            .error-icon {
+                font-size: 4rem;
+                margin-bottom: 20px;
+            }
+            .error-message h3 {
+                color: #e74c3c;
+                margin-bottom: 15px;
+                font-size: 1.5rem;
+            }
+            .error-message p {
+                color: #666;
+                margin-bottom: 15px;
+                line-height: 1.6;
+            }
+            .error-message ul {
+                text-align: left;
+                color: #666;
+                margin: 20px 0;
+                padding-left: 20px;
+            }
+            .error-message li {
+                margin-bottom: 8px;
+            }
+            .error-actions {
+                display: flex;
+                gap: 15px;
+                justify-content: center;
+                margin: 25px 0;
+            }
+            .retry-button, .clear-cache-button {
+                padding: 12px 24px;
+                border: none;
+                border-radius: 25px;
+                cursor: pointer;
+                font-weight: 600;
+                transition: all 0.3s ease;
+            }
+            .retry-button {
+                background: linear-gradient(135deg, #00d4aa, #00b894);
+                color: white;
+            }
+            .clear-cache-button {
+                background: linear-gradient(135deg, #f39c12, #e67e22);
+                color: white;
+            }
+            .retry-button:hover, .clear-cache-button:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            }
+            .error-note {
+                font-size: 0.9rem;
+                color: #999;
+                font-style: italic;
+            }
+        `;
+        document.head.appendChild(errorStyles);
+    }
+    
+    // Add to page
+    document.body.appendChild(notification);
+    
+    // Auto remove after 5 seconds
+    setTimeout(() => {
+        if (notification.parentElement) {
+            notification.style.animation = 'slideInRight 0.3s ease-out reverse';
+            setTimeout(() => {
+                if (notification.parentElement) {
+                    notification.remove();
+                }
+            }, 300);
+        }
+    }, 5000);
+}
+
+// Real-time updates functionality
+function initRealTimeUpdates() {
+    // Add refresh button to the page header
+    addRefreshButton();
+    
+    // Set up automatic refresh every 5 minutes
+    setInterval(async () => {
+        console.log('Auto-refreshing billionaire data...');
+        await refreshBillionaireData();
+    }, 5 * 60 * 1000); // 5 minutes
+    
+    // Add keyboard shortcut for refresh (Ctrl+R or Cmd+R)
+    document.addEventListener('keydown', (e) => {
+        if ((e.ctrlKey || e.metaKey) && e.key === 'r') {
+            e.preventDefault();
+            refreshBillionaireData();
+        }
+    });
+}
+
+// Add refresh button to the page
+function addRefreshButton() {
+    const pageHeader = document.querySelector('.richest-header .richest-controls');
+    if (!pageHeader) return;
+    
+    const refreshButton = document.createElement('button');
+    refreshButton.className = 'refresh-button';
+    refreshButton.innerHTML = `
+        <i class="fas fa-sync-alt"></i>
+        <span>Refresh Data</span>
+    `;
+    refreshButton.onclick = refreshBillionaireData;
+    
+    // Add styles for refresh button
+    if (!document.querySelector('#refresh-button-styles')) {
+        const styles = document.createElement('style');
+        styles.id = 'refresh-button-styles';
+        styles.textContent = `
+            .refresh-button {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                padding: 10px 20px;
+                background: linear-gradient(135deg, #00d4aa, #00b894);
+                color: white;
+                border: none;
+                border-radius: 25px;
+                cursor: pointer;
+                font-weight: 600;
+                transition: all 0.3s ease;
+                box-shadow: 0 5px 15px rgba(0, 212, 170, 0.3);
+            }
+            .refresh-button:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 25px rgba(0, 212, 170, 0.4);
+            }
+            .refresh-button:active {
+                transform: translateY(0);
+            }
+            .refresh-button i {
+                transition: transform 0.3s ease;
+            }
+            .refresh-button.loading i {
+                animation: spin 1s linear infinite;
+            }
+            @keyframes spin {
+                from { transform: rotate(0deg); }
+                to { transform: rotate(360deg); }
+            }
+        `;
+        document.head.appendChild(styles);
+    }
+    
+    pageHeader.appendChild(refreshButton);
+}
+
+// Refresh billionaire data
+async function refreshBillionaireData() {
+    const refreshButton = document.querySelector('.refresh-button');
+    if (refreshButton) {
+        refreshButton.classList.add('loading');
+        refreshButton.disabled = true;
+    }
+    
+    try {
+        // Clear cache to force fresh data
+        window.billionaireApi.clearCache();
+        
+        // Reload data
+        await loadRichestData();
+        
+        showNotification('Billionaire data refreshed successfully!', 'success');
+        
+    } catch (error) {
+        console.error('Error refreshing data:', error);
+        showNotification('Failed to refresh data. Please try again.', 'error');
+    } finally {
+        if (refreshButton) {
+            refreshButton.classList.remove('loading');
+            refreshButton.disabled = false;
+        }
+    }
 }
 
 // Utility functions
