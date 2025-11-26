@@ -1,0 +1,76 @@
+# Enable Rewrite Engine
+RewriteEngine On
+
+# Redirect admin to admin folder
+RewriteRule ^admin/?$ /admin/login.php [L,R=301]
+
+# Frontend Routes
+RewriteRule ^$ /index.php [L]
+RewriteRule ^index\.html$ /index.php [L,R=301]
+RewriteRule ^charts\.html$ /charts.php [L,R=301]
+RewriteRule ^music\.html$ /music.php [L,R=301]
+RewriteRule ^videos\.html$ /videos.php [L,R=301]
+RewriteRule ^richest\.html$ /richest.php [L,R=301]
+RewriteRule ^awards\.html$ /awards.php [L,R=301]
+RewriteRule ^hall-of-fame\.html$ /hall-of-fame.php [L,R=301]
+RewriteRule ^blog\.html$ /blog.php [L,R=301]
+RewriteRule ^news\.html$ /news.php [L,R=301]
+RewriteRule ^business\.html$ /business.php [L,R=301]
+RewriteRule ^blog/([a-z0-9-]+)/?$ /blog-view.php?slug=$1 [L]
+RewriteRule ^article/([a-z0-9-]+)/?$ /article.php?slug=$1 [L]
+
+# API Routes
+RewriteRule ^api/charts/?$ /api/get-charts.php [L]
+RewriteRule ^api/videos/?$ /api/get-videos.php [L]
+RewriteRule ^api/awards/?$ /api/get-awards.php [L]
+RewriteRule ^api/richest/?$ /api/get-richest.php [L]
+RewriteRule ^api/hall-of-fame/?$ /api/get-hall-of-fame.php [L]
+RewriteRule ^api/fetch-music/?$ /api/fetch-music.php [L]
+RewriteRule ^api/fetch-videos/?$ /api/fetch-videos.php [L]
+RewriteRule ^api/fetch-awards/?$ /api/fetch-awards.php [L]
+RewriteRule ^api/fetch-richest/?$ /api/fetch-richest.php [L]
+RewriteRule ^api/fetch-all-countries/?$ /api/fetch-all-countries.php [L]
+
+# Admin Routes
+RewriteRule ^admin/login/?$ /admin/login.php [L]
+RewriteRule ^admin/logout/?$ /admin/logout.php [L]
+RewriteRule ^admin/dashboard/?$ /admin/dashboard.php [L]
+RewriteRule ^admin/settings/?$ /admin/settings.php [L]
+RewriteRule ^admin/blog/?$ /admin/blog.php [L]
+RewriteRule ^admin/hall-of-fame/?$ /admin/hall-of-fame.php [L]
+RewriteRule ^admin/analytics/?$ /admin/analytics.php [L]
+RewriteRule ^admin/migrations/?$ /admin/migrations.php [L]
+
+# Security - Protect sensitive files
+<FilesMatch "^(config|bootstrap|classes|database)">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Protect config file
+<Files "config.php">
+    Order allow,deny
+    Deny from all
+</Files>
+
+# Allow install.php to run
+<Files "install.php">
+    Order allow,deny
+    Allow from all
+</Files>
+
+# Protect cache and uploads directories
+<DirectoryMatch "^.*/cache/">
+    Order Deny,Allow
+    Deny from all
+</DirectoryMatch>
+
+<DirectoryMatch "^.*/uploads/">
+    Order Deny,Allow
+    Deny from all
+</DirectoryMatch>
+
+# Enable PHP error reporting in development
+# php_flag display_errors On
+# php_value error_reporting E_ALL
+

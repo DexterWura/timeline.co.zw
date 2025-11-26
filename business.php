@@ -1,0 +1,30 @@
+<?php
+require_once __DIR__ . '/bootstrap.php';
+
+$seo = new SEO();
+$seo->setTitle('Music Industry Business Charts')
+    ->setDescription('Music industry business insights, revenue charts, market share data, and industry trends. Track the business side of the music industry.')
+    ->setKeywords(['music business', 'music industry', 'revenue charts', 'market share', 'music industry trends'])
+    ->setType('website');
+
+include __DIR__ . '/includes/header.php';
+?>
+
+    <section class="chart-header">
+        <div class="container">
+            <h1 class="chart-title">BUSINESS CHARTS</h1>
+            <p style="text-align: center; color: #666; margin-top: 1rem;">Music industry business insights</p>
+        </div>
+    </section>
+
+    <section class="chart-content">
+        <div class="container">
+            <div style="text-align: center; padding: 4rem;">
+                <h2>Coming Soon</h2>
+                <p>Business charts and analytics will be available soon.</p>
+            </div>
+        </div>
+    </section>
+
+<?php include __DIR__ . '/includes/footer.php'; ?>
+

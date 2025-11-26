@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /config/
+Disallow: /classes/
+Disallow: /database/
+Disallow: /cron/
+Disallow: /install.php
+Disallow: /bootstrap.php
+
+Sitemap: https://timeline.co.zw/sitemap.php
+

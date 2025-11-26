@@ -1,10 +1,10 @@
 # Timeline.co.zw - Music Charts & Entertainment Platform
 
-A responsive web application that replicates the Billboard Hot 100 website with additional features for music charts, videos, richest people, awards, and business analytics.
+A responsive web application that replicates the Billboard Hot 100 website with additional features for music charts, videos, richest people, awards, and business analytics. Now enhanced with a complete OOP PHP backend, admin panel, and API integration.
 
 ## 🚀 Features
 
-### Pages
+### Frontend Pages
 - **Homepage** - Hero section with animations, featured charts, and trending content
 - **Charts** - Billboard Hot 100 style music charts with filtering and sorting
 - **Videos** - Top 100 music videos with grid/list view toggle
@@ -12,134 +12,174 @@ A responsive web application that replicates the Billboard Hot 100 website with 
 - **Awards** - Music awards and recognition showcase
 - **Business** - Music industry business charts and analytics
 
-### Key Features
-- ✨ **Responsive Design** - Works perfectly on desktop, tablet, and mobile
-- 🎨 **Modern UI/UX** - Clean, professional design inspired by Billboard
-- ⚡ **Smooth Animations** - CSS animations and transitions throughout
-- 🔍 **Advanced Filtering** - Filter content by category, genre, time period
-- 📊 **Interactive Charts** - Visual data representation with hover effects
-- 🎵 **Music Integration Ready** - Prepared for API integration
-- 📱 **Mobile-First** - Optimized for mobile devices
-- ♿ **Accessible** - WCAG compliant with keyboard navigation
+### Backend Features
+- ✨ **OOP PHP Architecture** - Clean, maintainable code structure
+- 🔐 **Admin Panel** - Full-featured admin dashboard at `/admin`
+- 🔑 **API Key Management** - Configure YouTube, AdSense, News APIs, Last.fm, Spotify
+- 📝 **Blog Management** - Create, edit, and manage blog posts
+- 🎵 **Music API Integration** - Automatic fetching and ranking of music charts
+- 🎬 **Video API Integration** - YouTube video integration with ranking
+- 📰 **News Integration** - News API integration for entertainment news
+- 💾 **Database Migrations** - Flyway-style migration system
+- ⏰ **3-Day Caching** - Automatic caching with 3-day refresh cycle
+- 🎯 **Ranking Algorithm** - Intelligent ranking based on streams, views, and engagement
+- 🚀 **Auto-Install** - One-click installation wizard
 
 ## 🛠️ Technology Stack
 
+### Frontend
 - **HTML5** - Semantic markup
 - **CSS3** - Modern styling with Flexbox and Grid
 - **JavaScript (ES6+)** - Interactive functionality
 - **Font Awesome** - Icons
 - **Google Fonts** - Typography (Inter font family)
 
+### Backend
+- **PHP 7.4+** - Server-side logic
+- **MySQL/MariaDB** - Database
+- **PDO** - Database abstraction
+- **OOP** - Object-oriented programming
+- **RESTful API** - API endpoints
+
 ## 📁 Project Structure
 
 ```
 timeline.co.zw/
-├── index.html              # Homepage
-├── charts.html             # Music charts page
-├── videos.html             # Top videos page
-├── richest.html            # Richest people page
-├── awards.html             # Awards page
-├── business.html           # Business charts page
-├── css/
-│   ├── style.css           # Main styles
-│   ├── animations.css      # Animation keyframes
-│   ├── charts.css          # Charts page styles
-│   ├── videos.css          # Videos page styles
-│   ├── richest.css         # Richest page styles
-│   ├── awards.css          # Awards page styles
-│   ├── business.css        # Business page styles
-│   └── responsive.css      # Responsive design
-├── js/
-│   ├── main.js             # Core functionality
-│   ├── animations.js       # Animation controller
-│   ├── charts.js           # Charts page logic
-│   ├── videos.js           # Videos page logic
-│   ├── richest.js          # Richest page logic
-│   ├── awards.js           # Awards page logic
-│   └── business.js         # Business page logic
-├── images/                 # Image assets
-└── README.md              # Project documentation
+├── admin/                  # Admin panel
+│   ├── includes/          # Header and footer includes
+│   ├── assets/            # CSS, JS, images
+│   ├── dashboard.php      # Admin dashboard
+│   ├── settings.php       # API keys and settings
+│   ├── blog.php           # Blog management
+│   └── login.php          # Admin login
+├── api/                   # API endpoints
+│   ├── get-charts.php     # Get music charts
+│   ├── get-videos.php     # Get videos
+│   ├── fetch-music.php    # Fetch music from APIs
+│   └── fetch-videos.php   # Fetch videos from APIs
+├── classes/               # PHP Classes
+│   ├── Database.php       # Database connection
+│   ├── Auth.php           # Authentication
+│   ├── Migration.php      # Database migrations
+│   ├── Settings.php       # Settings manager
+│   ├── Blog.php           # Blog manager
+│   ├── ApiService.php     # Base API service
+│   ├── MusicApiService.php # Music API service
+│   ├── VideoApiService.php # Video API service
+│   └── NewsService.php    # News API service
+├── config/                # Configuration
+│   └── config.php         # Main config (auto-generated)
+├── database/              # Database migrations
+│   └── migrations/        # Migration files
+├── cron/                  # Cron jobs
+│   └── fetch-data.php     # Daily data fetch
+├── bootstrap.php          # Application bootstrap
+├── install.php            # Installation wizard
+└── .htaccess              # URL rewriting
 ```
 
-## 🎨 Design Features
+## 🔧 Installation
 
-### Color Scheme
-- **Primary**: #00d4aa (Teal)
-- **Secondary**: #00b894 (Dark Teal)
-- **Accent**: #667eea (Purple Blue)
-- **Background**: #f8f9fa (Light Gray)
-- **Text**: #1a1a1a (Dark Gray)
+### Step 1: Upload Files
+Upload all files to your web server.
 
-### Typography
-- **Font Family**: Inter (Google Fonts)
-- **Weights**: 300, 400, 500, 600, 700, 800
-- **Responsive**: Scales appropriately across devices
+### Step 2: Run Installer
+Navigate to `http://yourdomain.com/install.php` in your browser.
 
-### Animations
-- **Hero Animations**: Staggered text reveals, floating particles
-- **Scroll Animations**: Intersection Observer API
-- **Hover Effects**: Smooth transitions and transforms
-- **Loading States**: Spinners and skeleton screens
+### Step 3: Configure Database
+Enter your database credentials:
+- Database Host (usually `localhost`)
+- Database Name
+- Database User
+- Database Password
 
-## 📱 Responsive Breakpoints
+### Step 4: Create Admin Account
+Create your admin account:
+- Admin Email
+- Admin Password (minimum 8 characters)
 
-- **Mobile**: < 768px
-- **Tablet**: 768px - 1024px
-- **Desktop**: > 1024px
-- **Large Desktop**: > 1400px
+### Step 5: Configure API Keys
+1. Login to admin panel at `/admin`
+2. Go to Settings
+3. Enter your API keys:
+   - **YouTube API Key** - Get from [Google Cloud Console](https://console.cloud.google.com/)
+   - **AdSense Client ID** - Get from [Google AdSense](https://www.google.com/adsense/)
+   - **News API Key** - Get from [NewsAPI.org](https://newsapi.org/)
+   - **Last.fm API Key** - Get from [Last.fm API](https://www.last.fm/api)
+   - **Spotify Client ID & Secret** - Get from [Spotify Developer](https://developer.spotify.com/)
 
-## 🔧 Setup Instructions
-
-1. **Clone or Download** the project files
-2. **Open** `index.html` in a web browser
-3. **Navigate** between pages using the header navigation
-4. **Test** responsive design by resizing the browser window
-
-## 🚀 Future Enhancements
-
-### API Integration
-The project is structured to easily integrate with real APIs:
-
-```javascript
-// Example API integration
-async function fetchChartData(chartType) {
-    const response = await fetch(`/api/charts/${chartType}`);
-    return await response.json();
-}
+### Step 6: Set Up Cron Job (Optional)
+For automatic data fetching every 3 days, add this to your crontab:
+```bash
+0 0 * * * php /path/to/your/site/cron/fetch-data.php
 ```
 
-### Planned Features
-- 🎵 **Real-time Data** - Live chart updates
-- 🎧 **Music Player** - Embedded audio player
-- 📊 **Advanced Analytics** - Detailed metrics and insights
-- 🔐 **User Accounts** - Personalization and favorites
-- 📱 **PWA Support** - Progressive Web App capabilities
-- 🌐 **Internationalization** - Multi-language support
+## 📊 How It Works
 
-## 🎯 Performance Optimizations
+### Data Flow
+1. **API Fetching** - System fetches data from configured APIs (YouTube, Last.fm, etc.)
+2. **Ranking Algorithm** - Data is processed and ranked based on:
+   - Streams/Views (60-70% weight)
+   - Play Count/Likes (30-40% weight)
+3. **Database Storage** - Ranked data is stored in database
+4. **Caching** - Data is cached for 3 days to reduce API calls
+5. **Frontend Display** - Frontend fetches data from database via API endpoints
 
-- **Lazy Loading** - Images and content loaded on demand
-- **Minified Assets** - Optimized CSS and JavaScript
-- **Efficient Animations** - Hardware-accelerated transforms
-- **Responsive Images** - Appropriate sizing for different devices
-- **Caching Strategy** - Browser caching for static assets
+### Ranking Algorithm
+- **Music Charts**: `score = (streams × 0.6) + (play_count × 0.4)`
+- **Videos**: `score = (views × 0.7) + (likes × 100 × 0.3)`
 
-## ♿ Accessibility Features
+### Caching System
+- Data is cached in database for 3 days
+- After 3 days, system automatically fetches fresh data
+- Cache is stored in `api_cache` table with expiration timestamps
 
-- **Keyboard Navigation** - Full keyboard support
-- **Screen Reader** - Semantic HTML and ARIA labels
-- **High Contrast** - Support for high contrast mode
-- **Reduced Motion** - Respects user motion preferences
-- **Focus Indicators** - Clear focus states for all interactive elements
+## 🔐 Admin Panel
 
-## 🧪 Browser Support
+Access the admin panel at `/admin` (redirects to login).
 
-- **Chrome** 90+
-- **Firefox** 88+
-- **Safari** 14+
-- **Edge** 90+
+### Features
+- **Dashboard** - Overview of charts, videos, blogs, and news
+- **Settings** - Configure API keys and change password
+- **Blog Management** - Create, edit, publish, and delete blog posts
+- **Music Charts** - View and manage music charts
+- **Videos** - View and manage video charts
+- **News** - View and manage news articles
 
-## 📄 License
+## 🌐 API Endpoints
+
+### Public Endpoints
+- `GET /api/get-charts.php` - Get music charts
+- `GET /api/get-videos.php` - Get video charts
+
+### Admin Endpoints (Requires Authentication)
+- `POST /api/fetch-music.php` - Manually fetch music charts
+- `POST /api/fetch-videos.php` - Manually fetch videos
+
+### Query Parameters
+- `limit` - Number of results (default: 100)
+- `date` - Chart date (default: today)
+
+## 🗄️ Database Migrations
+
+The system uses a Flyway-style migration system. All migrations are in `database/migrations/`.
+
+Migrations are automatically run during installation and can be manually triggered:
+```php
+$migration = new Migration();
+$migration->runMigrations();
+```
+
+## 🔒 Security Features
+
+- Password hashing with bcrypt
+- Session-based authentication
+- SQL injection protection (PDO prepared statements)
+- XSS protection (input sanitization)
+- CSRF protection ready
+- Admin-only API endpoints
+
+## 📝 License
 
 This project is created for educational and portfolio purposes. Feel free to use and modify as needed.
 
@@ -151,7 +191,7 @@ This project is created for educational and portfolio purposes. Feel free to use
 4. Test across different devices
 5. Submit a pull request
 
-## 📞 Contact
+## 📞 Support
 
 For questions or suggestions, please reach out through the project repository.
 
