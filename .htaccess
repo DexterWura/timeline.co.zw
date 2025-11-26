@@ -41,7 +41,7 @@ RewriteRule ^admin/hall-of-fame/?$ /admin/hall-of-fame.php [L]
 RewriteRule ^admin/analytics/?$ /admin/analytics.php [L]
 RewriteRule ^admin/migrations/?$ /admin/migrations.php [L]
 
-# Security - Protect sensitive files
+# Security - Protect sensitive files (but allow install.php)
 <FilesMatch "^(config|bootstrap|classes|database)">
     Order allow,deny
     Deny from all
@@ -53,11 +53,11 @@ RewriteRule ^admin/migrations/?$ /admin/migrations.php [L]
     Deny from all
 </Files>
 
-# Allow install.php to run
-<Files "install.php">
+# Allow install.php and debug files to run
+<FilesMatch "^(install|install-debug)\.php$">
     Order allow,deny
     Allow from all
-</Files>
+</FilesMatch>
 
 # Protect cache and uploads directories
 <DirectoryMatch "^.*/cache/">

@@ -4,33 +4,49 @@
  * Run this file on first-time setup
  */
 
+// Enable error reporting for installer (helps debug installation issues)
+if (!defined('APP_ENV')) {
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+}
+
 // Start session for installer
 if (session_status() === PHP_SESSION_NONE) {
-    session_start();
+    @session_start();
 }
 
 // Check if already installed
-if (file_exists(__DIR__ . '/config/config.php')) {
-    $config = file_get_contents(__DIR__ . '/config/config.php');
-    // Check if database is configured (not default localhost/empty)
-    if (strpos($config, "define('DB_HOST', 'localhost')") === false && 
-        strpos($config, "define('DB_NAME', 'timeline_db')") === false &&
-        strpos($config, "define('DB_USER', 'root')") === false) {
-        die('Application is already installed. Delete config/config.php to reinstall.');
+$configFile = __DIR__ . '/config/config.php';
+if (file_exists($configFile)) {
+    try {
+        $config = @file_get_contents($configFile);
+        if ($config !== false) {
+            // Check if database is configured (not default localhost/empty)
+            $isDefault = (strpos($config, "define('DB_HOST', 'localhost')") !== false && 
+                         strpos($config, "define('DB_NAME', 'timeline_db')") !== false &&
+                         strpos($config, "define('DB_USER', 'root')") !== false);
+            
+            if (!$isDefault) {
+                die('Application is already installed. Delete config/config.php to reinstall.');
+            }
+        }
+    } catch (Exception $e) {
+        // If we can't read config, allow installation to proceed
     }
 }
 
-$step = $_GET['step'] ?? 1;
+$step = isset($_GET['step']) ? (int)$_GET['step'] : 1;
 $error = '';
 $success = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($step == 1) {
         // Database configuration
-        $dbHost = $_POST['db_host'] ?? 'localhost';
-        $dbName = $_POST['db_name'] ?? 'timeline_db';
-        $dbUser = $_POST['db_user'] ?? 'root';
-        $dbPass = $_POST['db_pass'] ?? '';
+        $dbHost = isset($_POST['db_host']) ? trim($_POST['db_host']) : 'localhost';
+        $dbName = isset($_POST['db_name']) ? trim($_POST['db_name']) : 'timeline_db';
+        $dbUser = isset($_POST['db_user']) ? trim($_POST['db_user']) : 'root';
+        $dbPass = isset($_POST['db_pass']) ? $_POST['db_pass'] : '';
         
         // Test database connection
         try {
@@ -60,9 +76,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit;
         }
         
-        $adminEmail = trim($_POST['admin_email'] ?? '');
-        $adminPassword = $_POST['admin_password'] ?? '';
-        $adminPasswordConfirm = $_POST['admin_password_confirm'] ?? '';
+        $adminEmail = isset($_POST['admin_email']) ? trim($_POST['admin_email']) : '';
+        $adminPassword = isset($_POST['admin_password']) ? $_POST['admin_password'] : '';
+        $adminPasswordConfirm = isset($_POST['admin_password_confirm']) ? $_POST['admin_password_confirm'] : '';
         
         if (empty($adminEmail) || empty($adminPassword)) {
             $error = 'Email and password are required';
@@ -151,7 +167,21 @@ PHP;
                 } else {
                     // Run migrations and create admin user
                     try {
-                        require_once __DIR__ . '/bootstrap.php';
+                        // Load config first (we just created it)
+                        require_once __DIR__ . '/config/config.php';
+                        
+                        // Autoloader for classes
+                        spl_autoload_register(function ($class) {
+                            $file = CLASSES_PATH . '/' . $class . '.php';
+                            if (file_exists($file)) {
+                                require_once $file;
+                            }
+                        });
+                        
+                        // Start session if needed
+                        if (session_status() === PHP_SESSION_NONE) {
+                            @session_start();
+                        }
                         
                         $migration = new Migration();
                         $migration->runMigrations();
@@ -184,8 +214,27 @@ PHP;
                         header('Location: ?step=3');
                         exit;
                     } catch (Exception $e) {
-                        $error = 'Installation failed: ' . $e->getMessage() . '. Please check error logs.';
+                        $errorMsg = $e->getMessage();
+                        $errorTrace = $e->getTraceAsString();
+                        
+                        // Log full error for debugging
+                        error_log("Installation Error: " . $errorMsg);
+                        error_log("Stack Trace: " . $errorTrace);
+                        
+                        $error = 'Installation failed: ' . htmlspecialchars($errorMsg) . 
+                                '. Please check error logs for details.';
+                        
                         // Delete config file if installation failed
+                        if (file_exists(__DIR__ . '/config/config.php')) {
+                            @unlink(__DIR__ . '/config/config.php');
+                        }
+                    } catch (Throwable $e) {
+                        // Catch any other errors (ParseError, etc.)
+                        $errorMsg = $e->getMessage();
+                        error_log("Fatal Installation Error: " . $errorMsg);
+                        $error = 'Fatal error during installation: ' . htmlspecialchars($errorMsg) . 
+                                '. Please check PHP error logs.';
+                        
                         if (file_exists(__DIR__ . '/config/config.php')) {
                             @unlink(__DIR__ . '/config/config.php');
                         }
