@@ -215,7 +215,7 @@ include __DIR__ . '/includes/header.php';
                         <h3>Cache Settings</h3>
                     </div>
                     <div class="card-body">
-                        <form method="POST" action="">
+                        <form method="POST" action="" id="cacheSettingsForm">
                             <input type="hidden" name="action" value="save_cache_settings">
                             <input type="hidden" name="csrf_token" value="<?php echo $security->generateCSRFToken(); ?>">
                             <div style="display: grid; gap: 1.5rem;">
@@ -226,9 +226,36 @@ include __DIR__ . '/includes/header.php';
                                     <input type="number" name="cache_duration_days" value="<?php echo htmlspecialchars($settings->get('cache_duration_days', 3)); ?>" min="1" max="30" required style="width: 100%; padding: 0.75rem 1rem; background: rgba(0, 0, 0, 0.04); border: 1px solid var(--glass-border); border-radius: 8px; color: var(--text-primary); font-size: 0.95rem;">
                                     <p style="margin: 0.5rem 0 0 0; font-size: 0.85rem; color: var(--text-tertiary);">How many days to cache API data before refreshing (default: 3 days)</p>
                                 </div>
-                                <button type="submit" style="padding: 0.875rem 2rem; background: var(--primary-color); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 500; width: fit-content; margin-top: 1rem;">
-                                    Save Cache Settings
-                                </button>
+                                
+                                <div style="padding: 1rem; background: rgba(0, 212, 170, 0.1); border-radius: 8px; border-left: 4px solid #00d4aa;">
+                                    <h4 style="margin: 0 0 0.5rem 0; color: var(--text-primary); font-size: 0.95rem; font-weight: 600;">
+                                        <i class="fa-solid fa-music"></i> Manual Data Refresh
+                                    </h4>
+                                    <p style="margin: 0 0 1rem 0; font-size: 0.85rem; color: var(--text-tertiary);">
+                                        Manually refetch music charts from APIs. This will bypass cache and fetch fresh data immediately.
+                                    </p>
+                                    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                                        <button type="button" onclick="refetchMusic()" id="refetchMusicBtn" style="padding: 0.875rem 2rem; background: #00d4aa; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 500; display: flex; align-items: center; gap: 0.5rem;">
+                                            <i class="fa-solid fa-music"></i>
+                                            <span>Refetch Music Charts</span>
+                                        </button>
+                                        <button type="button" onclick="refetchVideos()" id="refetchVideosBtn" style="padding: 0.875rem 2rem; background: #e74c3c; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 500; display: flex; align-items: center; gap: 0.5rem;">
+                                            <i class="fa-solid fa-video"></i>
+                                            <span>Refetch Video Charts</span>
+                                        </button>
+                                    </div>
+                                    <div id="refetchStatus" style="margin-top: 1rem; font-size: 0.85rem; display: none;"></div>
+                                </div>
+                                
+                                <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                                    <button type="submit" style="padding: 0.875rem 2rem; background: var(--primary-color); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 500;">
+                                        Save Cache Settings
+                                    </button>
+                                    <a href="/admin/test-youtube-api.php" style="padding: 0.875rem 2rem; background: #3498db; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 500; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;">
+                                        <i class="fa-solid fa-flask"></i>
+                                        Test YouTube API
+                                    </a>
+                                </div>
                             </div>
                         </form>
                     </div>
@@ -365,6 +392,92 @@ function generateSitemap() {
         } else {
             alert('Error: ' + (data.error || 'Failed to generate sitemap'));
         }
+    });
+}
+
+function refetchMusic() {
+    const btn = document.getElementById('refetchMusicBtn');
+    const status = document.getElementById('refetchStatus');
+    const originalHTML = btn.innerHTML;
+    
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span>Fetching...</span>';
+    status.style.display = 'block';
+    status.innerHTML = '<i class="fa-solid fa-info-circle"></i> Fetching music charts from APIs... This may take a few moments.';
+    status.style.color = '#666';
+    
+    fetch('/api/fetch-music.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            force_refresh: true
+        })
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.success) {
+            status.innerHTML = '<i class="fa-solid fa-check-circle" style="color: #00d4aa;"></i> ' + (data.message || 'Music charts fetched successfully!');
+            status.style.color = '#00d4aa';
+            setTimeout(() => {
+                status.style.display = 'none';
+            }, 5000);
+        } else {
+            status.innerHTML = '<i class="fa-solid fa-exclamation-circle" style="color: #e74c3c;"></i> Error: ' + (data.error || 'Failed to fetch music charts');
+            status.style.color = '#e74c3c';
+        }
+        btn.disabled = false;
+        btn.innerHTML = originalHTML;
+    })
+    .catch(error => {
+        status.innerHTML = '<i class="fa-solid fa-exclamation-circle" style="color: #e74c3c;"></i> Error: ' + error.message;
+        status.style.color = '#e74c3c';
+        btn.disabled = false;
+        btn.innerHTML = originalHTML;
+    });
+}
+
+function refetchVideos() {
+    const btn = document.getElementById('refetchVideosBtn');
+    const status = document.getElementById('refetchStatus');
+    const originalHTML = btn.innerHTML;
+    
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span>Fetching...</span>';
+    status.style.display = 'block';
+    status.innerHTML = '<i class="fa-solid fa-info-circle"></i> Fetching video charts from YouTube API... This may take a few moments.';
+    status.style.color = '#666';
+    
+    fetch('/api/fetch-videos.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            force_refresh: true
+        })
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.success) {
+            status.innerHTML = '<i class="fa-solid fa-check-circle" style="color: #00d4aa;"></i> ' + (data.message || 'Video charts fetched successfully!');
+            status.style.color = '#00d4aa';
+            setTimeout(() => {
+                status.style.display = 'none';
+            }, 5000);
+        } else {
+            status.innerHTML = '<i class="fa-solid fa-exclamation-circle" style="color: #e74c3c;"></i> Error: ' + (data.error || 'Failed to fetch video charts');
+            status.style.color = '#e74c3c';
+        }
+        btn.disabled = false;
+        btn.innerHTML = originalHTML;
+    })
+    .catch(error => {
+        status.innerHTML = '<i class="fa-solid fa-exclamation-circle" style="color: #e74c3c;"></i> Error: ' + error.message;
+        status.style.color = '#e74c3c';
+        btn.disabled = false;
+        btn.innerHTML = originalHTML;
     });
 }
 </script>

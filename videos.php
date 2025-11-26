@@ -102,22 +102,40 @@ include __DIR__ . '/includes/header.php';
                 <div class="chart-list">
                     <?php foreach ($videos as $video): ?>
                         <div class="chart-item">
-                            <div class="chart-rank"><?php echo $video['rank']; ?></div>
-                            <div class="chart-artwork">
-                                <img src="<?php echo htmlspecialchars($video['thumbnail_url'] ?: 'https://via.placeholder.com/80x80/00d4aa/ffffff?text=MV'); ?>" alt="<?php echo htmlspecialchars($video['title']); ?>">
-                            </div>
-                            <div class="chart-info">
-                                <h3><?php echo htmlspecialchars($video['title']); ?></h3>
-                                <p><?php echo htmlspecialchars($video['artist']); ?></p>
-                                <div class="chart-meta">
-                                    <span><?php echo number_format($video['views']); ?> views</span>
-                                    <span><?php echo number_format($video['likes']); ?> likes</span>
+                            <div class="rank-container">
+                                <div class="rank-number"><?php echo $video['rank']; ?></div>
+                                <div class="rank-indicator">
+                                    <?php 
+                                    $prevRank = $video['previous_rank'] ?? null;
+                                    if ($prevRank) {
+                                        if ($video['rank'] < $prevRank) {
+                                            echo '<span class="arrow-up"><i class="fas fa-arrow-up"></i></span>';
+                                        } elseif ($video['rank'] > $prevRank) {
+                                            echo '<span class="arrow-down"><i class="fas fa-arrow-down"></i></span>';
+                                        } else {
+                                            echo '<span class="arrow-same">—</span>';
+                                        }
+                                    } else {
+                                        echo '<span class="badge new">NEW</span>';
+                                    }
+                                    ?>
                                 </div>
                             </div>
+                            <div class="album-cover">
+                                <img src="<?php echo htmlspecialchars($video['thumbnail_url'] ?: 'https://via.placeholder.com/80x80/1a1a1a/ffffff?text=MV'); ?>" alt="<?php echo htmlspecialchars($video['title']); ?>">
+                            </div>
+                            <div class="song-info">
+                                <div class="song-title"><?php echo htmlspecialchars($video['title']); ?></div>
+                                <div class="artist-name"><?php echo htmlspecialchars($video['artist']); ?></div>
+                            </div>
                             <div class="chart-stats">
-                                <div class="stat">
-                                    <span class="stat-label">Views</span>
-                                    <span class="stat-value"><?php echo number_format($video['views'] / 1000000, 1); ?>M</span>
+                                <div class="stat-item">
+                                    <div class="stat-label">Views</div>
+                                    <div class="stat-value"><?php echo number_format($video['views'] / 1000000, 1); ?>M</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-label">Likes</div>
+                                    <div class="stat-value"><?php echo number_format($video['likes'] / 1000, 1); ?>K</div>
                                 </div>
                             </div>
                         </div>

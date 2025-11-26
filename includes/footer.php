@@ -40,6 +40,7 @@
     <script src="/js/images.js"></script>
     <script src="/js/main.js"></script>
     <script src="/js/animations.js"></script>
+    <script src="/js/slider.js"></script>
     <?php if (isset($customScripts)): ?>
         <?php foreach ($customScripts as $script): ?>
             <script src="<?php echo $script; ?>"></script>

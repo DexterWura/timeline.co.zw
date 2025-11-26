@@ -108,28 +108,40 @@ include __DIR__ . '/includes/header.php';
                 <div class="chart-list">
                     <?php foreach ($charts as $song): ?>
                         <div class="chart-item">
-                            <div class="chart-rank"><?php echo $song['rank']; ?></div>
-                            <div class="chart-artwork">
-                                <img src="<?php echo htmlspecialchars($song['artwork_url'] ?: 'https://via.placeholder.com/80x80/00d4aa/ffffff?text=' . substr($song['title'], 0, 2)); ?>" alt="<?php echo htmlspecialchars($song['title']); ?>">
-                            </div>
-                            <div class="chart-info">
-                                <h3><?php echo htmlspecialchars($song['title']); ?></h3>
-                                <p><?php echo htmlspecialchars($song['artist']); ?></p>
-                                <div class="chart-meta">
-                                    <span><?php echo $song['weeks_on_chart']; ?> weeks</span>
-                                    <span>Peak: #<?php echo $song['peak_position']; ?></span>
-                                    <?php if ($song['is_new']): ?>
-                                        <span class="badge new">NEW</span>
-                                    <?php endif; ?>
-                                    <?php if ($song['is_re_entry']): ?>
-                                        <span class="badge re-entry">RE-ENTRY</span>
-                                    <?php endif; ?>
+                            <div class="rank-container">
+                                <div class="rank-number"><?php echo $song['rank']; ?></div>
+                                <div class="rank-indicator">
+                                    <?php 
+                                    $prevRank = $song['previous_rank'] ?? null;
+                                    if ($prevRank) {
+                                        if ($song['rank'] < $prevRank) {
+                                            echo '<span class="arrow-up"><i class="fas fa-arrow-up"></i></span>';
+                                        } elseif ($song['rank'] > $prevRank) {
+                                            echo '<span class="arrow-down"><i class="fas fa-arrow-down"></i></span>';
+                                        } else {
+                                            echo '<span class="arrow-same">—</span>';
+                                        }
+                                    } else {
+                                        echo '<span class="badge new">NEW</span>';
+                                    }
+                                    ?>
                                 </div>
                             </div>
+                            <div class="album-cover">
+                                <img src="<?php echo htmlspecialchars($song['artwork_url'] ?: 'https://via.placeholder.com/80x80/1a1a1a/ffffff?text=' . substr($song['title'], 0, 2)); ?>" alt="<?php echo htmlspecialchars($song['title']); ?>">
+                            </div>
+                            <div class="song-info">
+                                <div class="song-title"><?php echo htmlspecialchars($song['title']); ?></div>
+                                <div class="artist-name"><?php echo htmlspecialchars($song['artist']); ?></div>
+                            </div>
                             <div class="chart-stats">
-                                <div class="stat">
-                                    <span class="stat-label">Streams</span>
-                                    <span class="stat-value"><?php echo number_format($song['streams']); ?></span>
+                                <div class="stat-item">
+                                    <div class="stat-label">Weeks</div>
+                                    <div class="stat-value"><?php echo $song['weeks_on_chart']; ?></div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-label">Peak</div>
+                                    <div class="stat-value">#<?php echo $song['peak_position']; ?></div>
                                 </div>
                             </div>
                         </div>
