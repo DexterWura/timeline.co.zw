@@ -60,6 +60,9 @@ $auth = new Auth();
                                 <i class="fas fa-user"></i>
                                 <span><?php echo htmlspecialchars($auth->getUserName()); ?></span>
                             </a>
+                            <?php if ($auth->isAdmin() || $auth->canWrite()): ?>
+                                <a href="/admin/dashboard.php" class="login-btn" style="margin-right: 0.5rem;">ADMIN</a>
+                            <?php endif; ?>
                             <a href="/logout.php" class="login-btn">LOGOUT</a>
                         <?php else: ?>
                             <button class="subscribe-btn" onclick="openSubscribeModal()">SUBSCRIBE</button>

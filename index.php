@@ -51,48 +51,6 @@ echo SEO::generateStructuredData('WebSite', [
 ]);
 ?>
 
-    <!-- Billboard-Style Top 5 Charts Slider -->
-    <section class="hero-section">
-        <div class="slider-wrapper">
-            <div class="slider" id="topChartsSlider">
-                <?php 
-                // Get top 5 charts
-                $top5Charts = $db->fetchAll(
-                    "SELECT * FROM music_charts WHERE chart_date = CURDATE() AND country_code = :country ORDER BY rank ASC LIMIT 5",
-                    ['country' => $userCountry]
-                );
-                
-                if (empty($top5Charts)) {
-                    $top5Charts = $db->fetchAll("SELECT * FROM music_charts WHERE chart_date = CURDATE() ORDER BY rank ASC LIMIT 5");
-                }
-                
-                foreach ($top5Charts as $index => $chart):
-                ?>
-                <div class="slide">
-                    <div class="slide-image" style="background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);">
-                        <?php if ($chart['artwork_url']): ?>
-                            <img src="<?php echo htmlspecialchars($chart['artwork_url']); ?>" alt="<?php echo htmlspecialchars($chart['title']); ?>" class="slide-image">
-                        <?php endif; ?>
-                    </div>
-                    <div class="slide-content">
-                        <div class="slide-rank">#<?php echo $chart['rank']; ?></div>
-                        <h2><?php echo htmlspecialchars($chart['title']); ?></h2>
-                        <p><?php echo htmlspecialchars($chart['artist']); ?></p>
-                        <div class="slide-stats">
-                            <span><i class="fas fa-chart-line"></i> <?php echo number_format($chart['streams']); ?> streams</span>
-                            <span><i class="fas fa-clock"></i> <?php echo $chart['weeks_on_chart']; ?> weeks</span>
-                        </div>
-                    </div>
-                </div>
-                <?php endforeach; ?>
-            </div>
-            <div class="slider-nav">
-                <button id="prev-slide"><i class="fas fa-chevron-left"></i></button>
-                <button id="next-slide"><i class="fas fa-chevron-right"></i></button>
-            </div>
-        </div>
-    </section>
-
     <!-- Billboard-Style Hot 100 Chart List -->
     <section class="main-container">
         <aside class="sidebar">
@@ -150,6 +108,48 @@ echo SEO::generateStructuredData('WebSite', [
             </div>
         </aside>
         <div class="content">
+            <!-- Billboard-Style Top 5 Charts Slider -->
+            <div class="hero-section">
+                <div class="slider-wrapper">
+                    <div class="slider" id="topChartsSlider">
+                        <?php 
+                        // Get top 5 charts
+                        $top5Charts = $db->fetchAll(
+                            "SELECT * FROM music_charts WHERE chart_date = CURDATE() AND country_code = :country ORDER BY rank ASC LIMIT 5",
+                            ['country' => $userCountry]
+                        );
+                        
+                        if (empty($top5Charts)) {
+                            $top5Charts = $db->fetchAll("SELECT * FROM music_charts WHERE chart_date = CURDATE() ORDER BY rank ASC LIMIT 5");
+                        }
+                        
+                        foreach ($top5Charts as $index => $chart):
+                        ?>
+                        <div class="slide">
+                            <div class="slide-image" style="background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);">
+                                <?php if ($chart['artwork_url']): ?>
+                                    <img src="<?php echo htmlspecialchars($chart['artwork_url']); ?>" alt="<?php echo htmlspecialchars($chart['title']); ?>" class="slide-image">
+                                <?php endif; ?>
+                            </div>
+                            <div class="slide-content">
+                                <div class="slide-rank">#<?php echo $chart['rank']; ?></div>
+                                <h2><?php echo htmlspecialchars($chart['title']); ?></h2>
+                                <p><?php echo htmlspecialchars($chart['artist']); ?></p>
+                                <div class="slide-stats">
+                                    <span><i class="fas fa-chart-line"></i> <?php echo number_format($chart['streams']); ?> streams</span>
+                                    <span><i class="fas fa-clock"></i> <?php echo $chart['weeks_on_chart']; ?> weeks</span>
+                                </div>
+                            </div>
+                        </div>
+                        <?php endforeach; ?>
+                    </div>
+                    <div class="slider-nav">
+                        <button id="prev-slide"><i class="fas fa-chevron-left"></i></button>
+                        <button id="next-slide"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+            </div>
+            
             <div class="chart-header-billboard">
                 <h1 class="billboard-title">TIMELINE HOT 100™</h1>
                 <p class="billboard-subtitle">The week's most popular songs ranked by streaming activity, radio play, and sales</p>
