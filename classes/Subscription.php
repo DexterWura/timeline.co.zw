@@ -38,6 +38,7 @@ class Subscription {
             // Create new subscription
             $unsubscribeToken = bin2hex(random_bytes(32));
             $insertData = [
+                'user_id' => $userId, // Explicitly set to NULL if not provided
                 'email' => $email,
                 'subscription_type' => $type,
                 'status' => 'active',
@@ -45,11 +46,6 @@ class Subscription {
                 'source' => $source,
                 'subscribed_at' => date('Y-m-d H:i:s')
             ];
-            
-            // Only add user_id if it's not null
-            if ($userId !== null) {
-                $insertData['user_id'] = $userId;
-            }
             
             $subscriptionId = $this->db->insert('subscriptions', $insertData);
             
