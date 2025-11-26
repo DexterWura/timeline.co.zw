@@ -1,34 +1,51 @@
 <?php
 require_once __DIR__ . '/bootstrap.php';
 
+$pageContent = new PageContent();
+$page = $pageContent->getPage('about');
+
+// Fallback to default content if page doesn't exist
+if (!$page) {
+    $seo = new SEO();
+    $seo->setTitle('About Us - ' . APP_NAME);
+    $seo->setDescription('Learn more about ' . APP_NAME . ' - Your source for music charts, entertainment news, and industry insights.');
+    include __DIR__ . '/includes/header.php';
+    ?>
+    <main class="main-content">
+        <div class="container">
+            <div class="page-header">
+                <h1>About Us</h1>
+                <p>Your trusted source for music charts and entertainment</p>
+            </div>
+            <div class="content-section">
+                <h2>Who We Are</h2>
+                <p><?php echo APP_NAME; ?> is a leading platform for music charts, entertainment news, and industry insights.</p>
+            </div>
+        </div>
+    </main>
+    <?php include __DIR__ . '/includes/footer.php';
+    exit;
+}
+
 $seo = new SEO();
-$seo->setTitle('About Us - ' . APP_NAME);
-$seo->setDescription('Learn more about ' . APP_NAME . ' - Your source for music charts, entertainment news, and industry insights.');
+$seo->setTitle($page['page_title'] . ' - ' . APP_NAME);
+if ($page['meta_description']) {
+    $seo->setDescription($page['meta_description']);
+}
+if ($page['meta_keywords']) {
+    $seo->setKeywords(explode(',', $page['meta_keywords']));
+}
 include __DIR__ . '/includes/header.php';
 ?>
 
 <main class="main-content">
     <div class="container">
         <div class="page-header">
-            <h1>About Us</h1>
-            <p>Your trusted source for music charts and entertainment</p>
+            <h1><?php echo htmlspecialchars($page['page_title']); ?></h1>
         </div>
         
         <div class="content-section">
-            <h2>Who We Are</h2>
-            <p><?php echo APP_NAME; ?> is a leading platform for music charts, entertainment news, and industry insights. We provide real-time data on the hottest songs, trending videos, and the latest news from the music industry.</p>
-            
-            <h2>Our Mission</h2>
-            <p>To deliver accurate, up-to-date music chart data and entertainment content to music lovers, industry professionals, and fans worldwide.</p>
-            
-            <h2>What We Offer</h2>
-            <ul>
-                <li>Real-time music charts (Hot 100, Global 200, Artist 100)</li>
-                <li>Top trending music videos</li>
-                <li>Entertainment news and articles</li>
-                <li>Music awards and industry recognition</li>
-                <li>Business insights and analytics</li>
-            </ul>
+            <?php echo $page['content']; ?>
         </div>
     </div>
 </main>

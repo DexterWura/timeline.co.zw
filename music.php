@@ -46,9 +46,16 @@ include __DIR__ . '/includes/header.php';
 
     <section class="chart-content">
         <div class="main-container">
-            <aside class="sidebar">
+            <button class="sidebar-toggle-mobile" id="sidebarToggleMobile" aria-label="Toggle sidebar">
+                <i class="fas fa-bars"></i>
+                <span>Charts</span>
+            </button>
+            <aside class="sidebar" id="frontendSidebar">
                 <div class="sidebar-header">
                     <h3>Charts</h3>
+                    <button class="sidebar-close-mobile" id="sidebarCloseMobile" aria-label="Close sidebar">
+                        <i class="fas fa-times"></i>
+                    </button>
                 </div>
                 <div class="sidebar-group">
                     <div class="sidebar-group-title">Hot Charts</div>

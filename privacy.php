@@ -1,34 +1,35 @@
 <?php
 require_once __DIR__ . '/bootstrap.php';
 
+$pageContent = new PageContent();
+$page = $pageContent->getPage('privacy');
+
+if (!$page) {
+    header('HTTP/1.0 404 Not Found');
+    include __DIR__ . '/404.php';
+    exit;
+}
+
 $seo = new SEO();
-$seo->setTitle('Privacy Policy - ' . APP_NAME);
-$seo->setDescription('Privacy Policy for ' . APP_NAME);
+$seo->setTitle($page['page_title'] . ' - ' . APP_NAME);
+if ($page['meta_description']) {
+    $seo->setDescription($page['meta_description']);
+}
+if ($page['meta_keywords']) {
+    $seo->setKeywords(explode(',', $page['meta_keywords']));
+}
 include __DIR__ . '/includes/header.php';
 ?>
 
 <main class="main-content">
     <div class="container">
         <div class="page-header">
-            <h1>Privacy Policy</h1>
-            <p>Last updated: <?php echo date('F d, Y'); ?></p>
+            <h1><?php echo htmlspecialchars($page['page_title']); ?></h1>
+            <p>Last updated: <?php echo $page['updated_at'] ? date('F d, Y', strtotime($page['updated_at'])) : date('F d, Y'); ?></p>
         </div>
         
         <div class="content-section">
-            <h2>Information We Collect</h2>
-            <p>We collect information that you provide directly to us, such as when you create an account, subscribe to our newsletter, or contact us.</p>
-            
-            <h2>How We Use Your Information</h2>
-            <p>We use the information we collect to provide, maintain, and improve our services, process transactions, and send you updates.</p>
-            
-            <h2>Data Security</h2>
-            <p>We implement appropriate security measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction.</p>
-            
-            <h2>Cookies</h2>
-            <p>We use cookies to enhance your experience on our website. You can choose to disable cookies through your browser settings.</p>
-            
-            <h2>Contact Us</h2>
-            <p>If you have questions about this Privacy Policy, please contact us at contact@timeline.co.zw</p>
+            <?php echo $page['content']; ?>
         </div>
     </div>
 </main>

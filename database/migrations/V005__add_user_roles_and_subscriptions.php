@@ -82,7 +82,7 @@ class V005__add_user_roles_and_subscriptions {
         $this->db->query("
             CREATE TABLE IF NOT EXISTS subscriptions (
                 id INT AUTO_INCREMENT PRIMARY KEY,
-                user_id INT NOT NULL,
+                user_id INT NULL,
                 email VARCHAR(255) NOT NULL,
                 subscription_type ENUM('newsletter', 'updates', 'premium') DEFAULT 'newsletter',
                 status ENUM('active', 'inactive', 'unsubscribed') DEFAULT 'active',
@@ -99,6 +99,16 @@ class V005__add_user_roles_and_subscriptions {
                 INDEX idx_token (unsubscribe_token)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
         ");
+        
+        // Update existing subscriptions table if user_id is NOT NULL
+        try {
+            $columns = $this->db->fetchAll("SHOW COLUMNS FROM subscriptions WHERE Field = 'user_id'");
+            if (!empty($columns) && $columns[0]['Null'] === 'NO') {
+                $this->db->query("ALTER TABLE subscriptions MODIFY COLUMN user_id INT NULL");
+            }
+        } catch (Exception $e) {
+            // Table might not exist yet, that's okay
+        }
         
         // User permissions table (for fine-grained permissions)
         $this->db->query("
