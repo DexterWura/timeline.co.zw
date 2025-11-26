@@ -96,22 +96,31 @@ echo SEO::generateStructuredData('WebSite', [
             </div>
             <div class="sidebar-group">
                 <div class="sidebar-group-title">More</div>
+                <?php
+                $settings = new Settings();
+                if ($settings->get('page_enabled_awards', 1)):
+                ?>
                 <a href="/awards.php" class="sidebar-section <?php echo $currentPage == 'awards' ? 'active' : ''; ?>">
                     <span>Awards</span>
                     <i class="fas fa-chevron-right"></i>
                 </a>
+                <?php endif; ?>
                 <a href="/hall-of-fame.php" class="sidebar-section <?php echo $currentPage == 'hall-of-fame' ? 'active' : ''; ?>">
                     <span>Hall of Fame</span>
                     <i class="fas fa-chevron-right"></i>
                 </a>
+                <?php if ($settings->get('page_enabled_richest', 1)): ?>
                 <a href="/richest.php" class="sidebar-section <?php echo $currentPage == 'richest' ? 'active' : ''; ?>">
                     <span>Richest People</span>
                     <i class="fas fa-chevron-right"></i>
                 </a>
+                <?php endif; ?>
+                <?php if ($settings->get('page_enabled_business', 1)): ?>
                 <a href="/business.php" class="sidebar-section <?php echo $currentPage == 'business' ? 'active' : ''; ?>">
                     <span>Business</span>
                     <i class="fas fa-chevron-right"></i>
                 </a>
+                <?php endif; ?>
             </div>
         </aside>
         <div class="content">

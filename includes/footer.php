@@ -16,8 +16,15 @@
                     <ul>
                         <li><a href="/charts.php">Hot 100</a></li>
                         <li><a href="/videos.php">Top Videos</a></li>
+                        <?php
+                        $settings = new Settings();
+                        if ($settings->get('page_enabled_richest', 1)):
+                        ?>
                         <li><a href="/richest.php">Richest People</a></li>
+                        <?php endif; ?>
+                        <?php if ($settings->get('page_enabled_business', 1)): ?>
                         <li><a href="/business.php">Business Charts</a></li>
+                        <?php endif; ?>
                     </ul>
                 </div>
                 <div class="footer-section">

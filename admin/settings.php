@@ -46,6 +46,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $settings->set('spotify_client_id', $_POST['spotify_client_id'] ?? '', 'text', 'Spotify Client ID');
         $settings->set('spotify_client_secret', $_POST['spotify_client_secret'] ?? '', 'text', 'Spotify Client Secret');
         $success = 'API keys saved successfully!';
+    } elseif ($action === 'save_page_visibility') {
+        $pages = ['richest', 'business', 'blog', 'awards', 'news'];
+        
+        foreach ($pages as $pageKey) {
+            $isEnabled = isset($_POST['page_enabled_' . $pageKey]) ? 1 : 0;
+            $settings->set('page_enabled_' . $pageKey, $isEnabled, 'boolean', 'Enable/disable ' . ucfirst($pageKey) . ' page');
+        }
+        
+        $success = 'Page visibility settings saved successfully!';
     } elseif ($action === 'change_password') {
         $auth = new Auth();
         $currentPassword = $_POST['current_password'] ?? '';
@@ -308,6 +317,57 @@ include __DIR__ . '/includes/header.php';
                     </div>
                 </div>
                 
+                <!-- Page Visibility Settings -->
+                <div class="info-card">
+                    <div class="card-header">
+                        <h3>Page Visibility</h3>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST" action="">
+                            <input type="hidden" name="action" value="save_page_visibility">
+                            <input type="hidden" name="csrf_token" value="<?php echo $security->generateCSRFToken(); ?>">
+                            <div style="display: grid; gap: 1.5rem;">
+                                <p style="color: var(--text-secondary); font-size: 0.9rem; margin: 0;">
+                                    Control which pages are visible on the frontend. Disabled pages will return a 404 error.
+                                </p>
+                                
+                                <?php
+                                $pages = [
+                                    'richest' => ['name' => 'Richest People', 'icon' => 'fa-dollar-sign'],
+                                    'business' => ['name' => 'Business', 'icon' => 'fa-briefcase'],
+                                    'blog' => ['name' => 'Blog', 'icon' => 'fa-blog'],
+                                    'awards' => ['name' => 'Awards', 'icon' => 'fa-trophy'],
+                                    'news' => ['name' => 'News', 'icon' => 'fa-newspaper']
+                                ];
+                                
+                                foreach ($pages as $pageKey => $pageInfo):
+                                    $isEnabled = $settings->get('page_enabled_' . $pageKey, 1);
+                                ?>
+                                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: rgba(0, 0, 0, 0.02); border-radius: 8px;">
+                                        <div style="display: flex; align-items: center; gap: 1rem;">
+                                            <i class="fa-solid <?php echo $pageInfo['icon']; ?>" style="font-size: 1.5rem; color: var(--primary-color);"></i>
+                                            <div>
+                                                <div style="font-weight: 600; color: var(--text-primary);"><?php echo htmlspecialchars($pageInfo['name']); ?></div>
+                                                <div style="font-size: 0.85rem; color: var(--text-secondary);">/<?php echo $pageKey; ?>.php</div>
+                                            </div>
+                                        </div>
+                                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                                            <input type="checkbox" name="page_enabled_<?php echo $pageKey; ?>" value="1" <?php echo $isEnabled ? 'checked' : ''; ?> style="cursor: pointer; width: 20px; height: 20px;">
+                                            <span style="font-weight: 500; color: var(--text-primary);"><?php echo $isEnabled ? 'Enabled' : 'Disabled'; ?></span>
+                                        </label>
+                                    </div>
+                                <?php endforeach; ?>
+                                
+                                <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                                    <button type="submit" style="padding: 0.875rem 2rem; background: var(--primary-color); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 500;">
+                                        Save Page Visibility
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
                 <!-- System Information -->
                 <div class="info-card">
                     <div class="card-header">

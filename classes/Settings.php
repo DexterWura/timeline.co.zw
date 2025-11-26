@@ -11,11 +11,20 @@ class Settings {
     
     public function get($key, $default = '') {
         $result = $this->db->fetchOne(
-            "SELECT setting_value FROM settings WHERE setting_key = :key",
+            "SELECT setting_value, setting_type FROM settings WHERE setting_key = :key",
             ['key' => $key]
         );
         
-        return $result ? $result['setting_value'] : $default;
+        if (!$result) {
+            return $default;
+        }
+        
+        // Handle boolean type settings
+        if ($result['setting_type'] === 'boolean') {
+            return (int)$result['setting_value'] === 1;
+        }
+        
+        return $result['setting_value'];
     }
     
     public function set($key, $value, $type = 'text', $description = '') {

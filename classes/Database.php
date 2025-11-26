@@ -60,12 +60,27 @@ class Database {
     }
     
     public function insert($table, $data) {
+        // Filter out NULL values that shouldn't be in the INSERT statement
+        // But keep them if the column is nullable - we'll handle NULL explicitly
         $fields = array_keys($data);
-        $placeholders = ':' . implode(', :', $fields);
-        $fieldsList = implode(', ', $fields);
+        $placeholders = [];
+        $values = [];
         
-        $sql = "INSERT INTO {$table} ({$fieldsList}) VALUES ({$placeholders})";
-        $this->query($sql, $data);
+        foreach ($data as $key => $value) {
+            if ($value === null) {
+                // For NULL values, use NULL in SQL instead of a placeholder
+                $placeholders[] = 'NULL';
+            } else {
+                $placeholders[] = ':' . $key;
+                $values[':' . $key] = $value;
+            }
+        }
+        
+        $fieldsList = implode(', ', $fields);
+        $placeholdersList = implode(', ', $placeholders);
+        
+        $sql = "INSERT INTO {$table} ({$fieldsList}) VALUES ({$placeholdersList})";
+        $this->query($sql, $values);
         return $this->connection->lastInsertId();
     }
     

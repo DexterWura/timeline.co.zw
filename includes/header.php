@@ -47,12 +47,25 @@ $auth = new Auth();
                         <a href="/music.php" class="nav-link <?php echo $currentPage == 'music' ? 'active' : ''; ?>">Music</a>
                         <a href="/charts.php" class="nav-link <?php echo $currentPage == 'charts' ? 'active' : ''; ?>">Charts</a>
                         <a href="/videos.php" class="nav-link <?php echo $currentPage == 'videos' ? 'active' : ''; ?>">Videos</a>
+                        <?php
+                        $settings = new Settings();
+                        if ($settings->get('page_enabled_richest', 1)):
+                        ?>
                         <a href="/richest.php" class="nav-link <?php echo $currentPage == 'richest' ? 'active' : ''; ?>">Richest</a>
+                        <?php endif; ?>
+                        <?php if ($settings->get('page_enabled_awards', 1)): ?>
                         <a href="/awards.php" class="nav-link <?php echo $currentPage == 'awards' ? 'active' : ''; ?>">Awards</a>
+                        <?php endif; ?>
                         <a href="/hall-of-fame.php" class="nav-link <?php echo $currentPage == 'hall-of-fame' ? 'active' : ''; ?>">Hall of Fame</a>
+                        <?php if ($settings->get('page_enabled_blog', 1)): ?>
                         <a href="/blog.php" class="nav-link <?php echo $currentPage == 'blog' ? 'active' : ''; ?>">Blog</a>
+                        <?php endif; ?>
+                        <?php if ($settings->get('page_enabled_news', 1)): ?>
                         <a href="/news.php" class="nav-link <?php echo $currentPage == 'news' ? 'active' : ''; ?>">News</a>
+                        <?php endif; ?>
+                        <?php if ($settings->get('page_enabled_business', 1)): ?>
                         <a href="/business.php" class="nav-link <?php echo $currentPage == 'business' ? 'active' : ''; ?>">Business</a>
+                        <?php endif; ?>
                     </nav>
                     <div class="header-actions">
                         <?php if ($auth->isLoggedIn()): ?>
