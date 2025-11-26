@@ -23,32 +23,50 @@ document.addEventListener('DOMContentLoaded', function() {
         currentYearElement.textContent = new Date().getFullYear();
     }
     
-    const menuToggle = document.getElementById('menuToggle');
-    const sidebar = document.querySelector('.sidebar');
-    
-    if (menuToggle && sidebar) {
+    // Mobile menu toggle functionality - ensure it works on all pages
+    function initMobileMenu() {
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.querySelector('.sidebar');
+        
+        if (!menuToggle || !sidebar) {
+            // Retry after a short delay if elements aren't ready
+            setTimeout(initMobileMenu, 100);
+            return;
+        }
+        
         const toggleSidebar = (open) => {
+            const sidebarEl = document.querySelector('.sidebar');
+            if (!sidebarEl) return;
+            
             if (open) {
-                sidebar.classList.add('open');
+                sidebarEl.classList.add('open');
                 document.body.classList.add('sidebar-open');
                 document.body.style.overflow = 'hidden';
             } else {
-                sidebar.classList.remove('open');
+                sidebarEl.classList.remove('open');
                 document.body.classList.remove('sidebar-open');
                 document.body.style.overflow = '';
             }
         };
 
+        // Add click event listener to menu toggle
         menuToggle.addEventListener('click', function(e) {
             e.stopPropagation();
-            const isOpen = sidebar.classList.contains('open');
-            toggleSidebar(!isOpen);
+            e.preventDefault();
+            const sidebarEl = document.querySelector('.sidebar');
+            if (sidebarEl) {
+                const isOpen = sidebarEl.classList.contains('open');
+                toggleSidebar(!isOpen);
+            }
         });
 
+        // Handle outside clicks to close menu
         const handleOutsideClick = (event) => {
             if (window.innerWidth <= 1199) {
-                if (sidebar.classList.contains('open')) {
-                    if (!sidebar.contains(event.target) && !menuToggle.contains(event.target)) {
+                const sidebarEl = document.querySelector('.sidebar');
+                const menuToggleEl = document.getElementById('menuToggle');
+                if (sidebarEl && sidebarEl.classList.contains('open')) {
+                    if (!sidebarEl.contains(event.target) && menuToggleEl && !menuToggleEl.contains(event.target)) {
                         toggleSidebar(false);
                     }
                 }
@@ -57,6 +75,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         document.addEventListener('click', handleOutsideClick, { passive: true });
 
+        // Handle window resize
         let resizeTimer;
         window.addEventListener('resize', function() {
             clearTimeout(resizeTimer);
@@ -67,6 +86,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }, 150);
         }, { passive: true });
 
+        // Close menu when clicking nav items on mobile
         const navItems = document.querySelectorAll('.nav-item');
         navItems.forEach(item => {
             item.addEventListener('click', function() {
@@ -76,6 +96,12 @@ document.addEventListener('DOMContentLoaded', function() {
             }, { passive: true });
         });
     }
+    
+    // Initialize mobile menu
+    initMobileMenu();
+    
+    // Also ensure sidebar variable is available for other code
+    const sidebar = document.querySelector('.sidebar');
 
     const sidebarToggle = document.getElementById('sidebarToggle');
     
