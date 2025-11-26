@@ -415,23 +415,30 @@ function refetchMusic() {
             force_refresh: true
         })
     })
-    .then(r => r.json())
+    .then(r => {
+        if (!r.ok) {
+            throw new Error('HTTP ' + r.status + ': ' + r.statusText);
+        }
+        return r.json();
+    })
     .then(data => {
         if (data.success) {
             status.innerHTML = '<i class="fa-solid fa-check-circle" style="color: #00d4aa;"></i> ' + (data.message || 'Music charts fetched successfully!');
             status.style.color = '#00d4aa';
+            // Reload page after 2 seconds to show new data
             setTimeout(() => {
-                status.style.display = 'none';
-            }, 5000);
+                window.location.href = '/index.php';
+            }, 2000);
         } else {
             status.innerHTML = '<i class="fa-solid fa-exclamation-circle" style="color: #e74c3c;"></i> Error: ' + (data.error || 'Failed to fetch music charts');
             status.style.color = '#e74c3c';
+            btn.disabled = false;
+            btn.innerHTML = originalHTML;
         }
-        btn.disabled = false;
-        btn.innerHTML = originalHTML;
     })
     .catch(error => {
-        status.innerHTML = '<i class="fa-solid fa-exclamation-circle" style="color: #e74c3c;"></i> Error: ' + error.message;
+        console.error('Refetch error:', error);
+        status.innerHTML = '<i class="fa-solid fa-exclamation-circle" style="color: #e74c3c;"></i> Error: ' + error.message + '. Check browser console for details.';
         status.style.color = '#e74c3c';
         btn.disabled = false;
         btn.innerHTML = originalHTML;

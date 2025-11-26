@@ -95,6 +95,60 @@ echo SEO::generateStructuredData('WebSite', [
 
     <!-- Billboard-Style Hot 100 Chart List -->
     <section class="main-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h3>Charts</h3>
+            </div>
+            <div class="sidebar-group">
+                <div class="sidebar-group-title">Hot Charts</div>
+                <a href="/charts.php" class="sidebar-section <?php echo $currentPage == 'charts' ? 'active' : ''; ?>">
+                    <span>Hot 100</span>
+                    <i class="fas fa-chevron-right"></i>
+                </a>
+                <a href="/charts.php?chart=200" class="sidebar-section">
+                    <span>Timeline 200</span>
+                    <i class="fas fa-chevron-right"></i>
+                </a>
+                <a href="/charts.php?chart=global" class="sidebar-section">
+                    <span>Global 200</span>
+                    <i class="fas fa-chevron-right"></i>
+                </a>
+                <a href="/charts.php?chart=artist" class="sidebar-section">
+                    <span>Artist 100</span>
+                    <i class="fas fa-chevron-right"></i>
+                </a>
+            </div>
+            <div class="sidebar-group">
+                <div class="sidebar-group-title">Music</div>
+                <a href="/music.php" class="sidebar-section <?php echo $currentPage == 'music' ? 'active' : ''; ?>">
+                    <span>Top Songs</span>
+                    <i class="fas fa-chevron-right"></i>
+                </a>
+                <a href="/videos.php" class="sidebar-section <?php echo $currentPage == 'videos' ? 'active' : ''; ?>">
+                    <span>Top Videos</span>
+                    <i class="fas fa-chevron-right"></i>
+                </a>
+            </div>
+            <div class="sidebar-group">
+                <div class="sidebar-group-title">More</div>
+                <a href="/awards.php" class="sidebar-section <?php echo $currentPage == 'awards' ? 'active' : ''; ?>">
+                    <span>Awards</span>
+                    <i class="fas fa-chevron-right"></i>
+                </a>
+                <a href="/hall-of-fame.php" class="sidebar-section <?php echo $currentPage == 'hall-of-fame' ? 'active' : ''; ?>">
+                    <span>Hall of Fame</span>
+                    <i class="fas fa-chevron-right"></i>
+                </a>
+                <a href="/richest.php" class="sidebar-section <?php echo $currentPage == 'richest' ? 'active' : ''; ?>">
+                    <span>Richest People</span>
+                    <i class="fas fa-chevron-right"></i>
+                </a>
+                <a href="/business.php" class="sidebar-section <?php echo $currentPage == 'business' ? 'active' : ''; ?>">
+                    <span>Business</span>
+                    <i class="fas fa-chevron-right"></i>
+                </a>
+            </div>
+        </aside>
         <div class="content">
             <div class="chart-header-billboard">
                 <h1 class="billboard-title">TIMELINE HOT 100™</h1>

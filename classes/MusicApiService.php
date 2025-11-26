@@ -22,7 +22,7 @@ class MusicApiService extends ApiService {
         return $this->fetchDataForCountry($countryCode);
     }
     
-    private function fetchFromApis() {
+    public function fetchFromApis() {
         $data = [];
         
         // Try Last.fm API
@@ -272,7 +272,7 @@ class MusicApiService extends ApiService {
         return $rankedData;
     }
     
-    private function categorizeGenre($title, $artist) {
+    public function categorizeGenre($title, $artist) {
         $titleLower = strtolower($title);
         $artistLower = strtolower($artist);
         

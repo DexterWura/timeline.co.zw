@@ -343,47 +343,84 @@ body.no-scroll {
 .sidebar {
     width: 280px;
     min-height: calc(100vh - 140px);
-    background-color: var(--dark-color);
-    padding: 20px;
-    border-radius: 8px;
-    display: none;
+    background-color: #1a1a1a;
+    padding: 0;
+    border-radius: 0;
+    display: block;
     flex-shrink: 0;
+    border-right: 1px solid #2d2d2d;
+}
+
+.sidebar-header {
+    padding: 20px;
+    border-bottom: 1px solid #2d2d2d;
+    background: #1a1a1a;
 }
 
 .sidebar h3 {
-    color: var(--light-color);
-    font-size: 16px;
-    margin-bottom: 16px;
+    color: #fff;
+    font-size: 14px;
+    margin: 0 0 16px 0;
     font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .sidebar-section {
-    color: var(--light-color);
-    padding: 12px 0;
-    border-bottom: 1px solid #3a3a3c;
+    color: #fff;
+    padding: 12px 20px;
+    border-bottom: 1px solid #2d2d2d;
     cursor: pointer;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 500;
-    transition: color 0.2s;
+    transition: all 0.2s;
     background: none;
     border-left: none;
     border-right: none;
     border-top: none;
     width: 100%;
     text-align: left;
+    text-decoration: none;
 }
 
 .sidebar-section:hover {
-    color: var(--secondary-color);
+    background-color: #2d2d2d;
+    color: #00d4aa;
+}
+
+.sidebar-section.active {
+    background-color: #00d4aa;
+    color: #000;
+    font-weight: 700;
+}
+
+.sidebar-group {
+    margin-bottom: 8px;
+}
+
+.sidebar-group-title {
+    color: #888;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 12px 20px 8px;
+    font-weight: 700;
 }
 
 .content {
     flex: 1;
-    padding: 0 16px;
+    padding: 0;
     min-width: 0;
+    background: #fff;
+}
+
+.content .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
 }
 
 /* === HERO SECTION === */

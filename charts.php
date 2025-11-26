@@ -98,7 +98,63 @@ include __DIR__ . '/includes/header.php';
 
     <!-- Chart Content -->
     <section class="chart-content">
-        <div class="container">
+        <div class="main-container">
+            <aside class="sidebar">
+                <div class="sidebar-header">
+                    <h3>Charts</h3>
+                </div>
+                <div class="sidebar-group">
+                    <div class="sidebar-group-title">Hot Charts</div>
+                    <a href="/charts.php" class="sidebar-section active">
+                        <span>Hot 100</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                    <a href="/charts.php?chart=200" class="sidebar-section">
+                        <span>Timeline 200</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                    <a href="/charts.php?chart=global" class="sidebar-section">
+                        <span>Global 200</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                    <a href="/charts.php?chart=artist" class="sidebar-section">
+                        <span>Artist 100</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                </div>
+                <div class="sidebar-group">
+                    <div class="sidebar-group-title">Music</div>
+                    <a href="/music.php" class="sidebar-section">
+                        <span>Top Songs</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                    <a href="/videos.php" class="sidebar-section">
+                        <span>Top Videos</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                </div>
+                <div class="sidebar-group">
+                    <div class="sidebar-group-title">More</div>
+                    <a href="/awards.php" class="sidebar-section">
+                        <span>Awards</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                    <a href="/hall-of-fame.php" class="sidebar-section">
+                        <span>Hall of Fame</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                    <a href="/richest.php" class="sidebar-section">
+                        <span>Richest People</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                    <a href="/business.php" class="sidebar-section">
+                        <span>Business</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                </div>
+            </aside>
+            <div class="content">
+                <div class="container">
             <?php if (empty($charts)): ?>
                 <div class="empty-state">
                     <h2>No chart data available</h2>
@@ -148,6 +204,8 @@ include __DIR__ . '/includes/header.php';
                     <?php endforeach; ?>
                 </div>
             <?php endif; ?>
+                </div>
+            </div>
         </div>
     </section>
 
