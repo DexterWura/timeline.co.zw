@@ -67,8 +67,12 @@ class Migration {
     }
     
     private function executeMigration($file, $version) {
+        $transactionStarted = false;
         try {
-            $this->db->beginTransaction();
+            // Only start transaction if not already in one
+            if ($this->db->beginTransaction()) {
+                $transactionStarted = true;
+            }
             
             require_once $file;
             
@@ -82,10 +86,12 @@ class Migration {
                 // Record migration
                 $this->db->insert('migrations', [
                     'version' => $version,
-                    'description' => $migration->getDescription() ?? 'Migration'
+                    'description' => isset($migration) && method_exists($migration, 'getDescription') ? $migration->getDescription() : 'Migration'
                 ]);
                 
-                $this->db->commit();
+                if ($transactionStarted) {
+                    $this->db->commit();
+                }
                 if (php_sapi_name() === 'cli') {
                     echo "Migration {$version} executed successfully\n";
                 }
@@ -93,7 +99,9 @@ class Migration {
                 throw new Exception("Migration class {$className} not found");
             }
         } catch (Exception $e) {
-            $this->db->rollback();
+            if ($transactionStarted) {
+                $this->db->rollback();
+            }
             throw new Exception("Migration failed: " . $e->getMessage());
         }
     }

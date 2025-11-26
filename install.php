@@ -186,8 +186,29 @@ PHP;
                         $migration = new Migration();
                         $migration->runMigrations();
                         
+                        // Ensure any pending transactions are closed and connection is in autocommit mode
+                        $db = Database::getInstance();
+                        $conn = $db->getConnection();
+                        if ($conn->inTransaction()) {
+                            try {
+                                $conn->rollBack();
+                            } catch (Exception $e) {
+                                // Transaction might already be closed, ignore
+                                error_log("Transaction rollback warning: " . $e->getMessage());
+                            }
+                        }
+                        
+                        // Ensure autocommit is enabled
+                        if (!$conn->inTransaction()) {
+                            // Connection is ready for normal operations
+                        }
+                        
                         $auth = new Auth();
-                        $auth->createUser($adminEmail, $adminPassword, 'admin');
+                        $result = $auth->createUser($adminEmail, $adminPassword, 'admin');
+                        
+                        if (!$result || $result === false) {
+                            throw new Exception("Failed to create admin user. User ID returned: " . ($result ?: 'null'));
+                        }
                         
                         // Create required directories
                         $directories = [

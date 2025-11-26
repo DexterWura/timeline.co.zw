@@ -11,8 +11,8 @@ class Auth {
     }
     
     private function startSession() {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
+        if (!isset($_SESSION) && session_status() !== PHP_SESSION_ACTIVE) {
+            @session_start();
         }
     }
     
@@ -78,14 +78,35 @@ class Auth {
     }
     
     public function createUser($email, $password, $role = 'admin') {
-        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-        
-        return $this->db->insert('users', [
-            'email' => $email,
-            'password' => $hashedPassword,
-            'role' => $role,
-            'created_at' => date('Y-m-d H:i:s')
-        ]);
+        try {
+            // Check if user already exists
+            $existing = $this->db->fetchOne(
+                "SELECT id FROM users WHERE email = :email",
+                ['email' => $email]
+            );
+            
+            if ($existing) {
+                throw new Exception("User with email {$email} already exists");
+            }
+            
+            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+            
+            if ($hashedPassword === false) {
+                throw new Exception("Failed to hash password");
+            }
+            
+            $userId = $this->db->insert('users', [
+                'email' => $email,
+                'password' => $hashedPassword,
+                'role' => $role,
+                'created_at' => date('Y-m-d H:i:s')
+            ]);
+            
+            return $userId;
+        } catch (Exception $e) {
+            error_log("Error creating user: " . $e->getMessage());
+            throw $e;
+        }
     }
 }
 

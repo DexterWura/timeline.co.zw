@@ -13,6 +13,7 @@ class Database {
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
                 PDO::ATTR_EMULATE_PREPARES => false,
+                PDO::ATTR_AUTOCOMMIT => true, // Ensure autocommit is on by default
             ];
             
             $this->connection = new PDO($dsn, DB_USER, DB_PASS, $options);
@@ -78,14 +79,24 @@ class Database {
     }
     
     public function beginTransaction() {
+        // Ensure we're not already in a transaction
+        if ($this->connection->inTransaction()) {
+            return false; // Already in transaction
+        }
         return $this->connection->beginTransaction();
     }
     
     public function commit() {
+        if (!$this->connection->inTransaction()) {
+            return false; // No active transaction
+        }
         return $this->connection->commit();
     }
     
     public function rollback() {
+        if (!$this->connection->inTransaction()) {
+            return false; // No active transaction
+        }
         return $this->connection->rollBack();
     }
 }
