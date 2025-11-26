@@ -16,6 +16,26 @@ class V011__fetch_initial_zimbabwe_charts {
     
     public function up() {
         try {
+            // Ensure classes are loaded (migration might be loaded before autoloader)
+            if (!class_exists('Database')) {
+                require_once __DIR__ . '/../../classes/Database.php';
+            }
+            if (!class_exists('Settings')) {
+                require_once __DIR__ . '/../../classes/Settings.php';
+            }
+            if (!class_exists('Geolocation')) {
+                require_once __DIR__ . '/../../classes/Geolocation.php';
+            }
+            if (!class_exists('ApiService')) {
+                require_once __DIR__ . '/../../classes/ApiService.php';
+            }
+            if (!class_exists('MusicApiService')) {
+                require_once __DIR__ . '/../../classes/MusicApiService.php';
+            }
+            if (!class_exists('VideoApiService')) {
+                require_once __DIR__ . '/../../classes/VideoApiService.php';
+            }
+            
             // Check if YouTube API key is configured
             $settings = new Settings();
             $youtubeApiKey = $settings->get('youtube_api_key');
@@ -104,29 +124,42 @@ class V011__fetch_initial_zimbabwe_charts {
                 ]);
                 
                 // Use reflection to access private methods for direct fetch (bypassing cache)
-                $videoServiceReflection = new ReflectionClass($videoService);
-                $fetchFromApisMethod = $videoServiceReflection->getMethod('fetchFromApis');
-                $fetchFromApisMethod->setAccessible(true);
-                $processDataMethod = $videoServiceReflection->getMethod('processData');
-                $processDataMethod->setAccessible(true);
-                $storeInDatabaseMethod = $videoServiceReflection->getMethod('storeInDatabase');
-                $storeInDatabaseMethod->setAccessible(true);
-                
-                // Fetch from APIs
-                $rawVideoData = $fetchFromApisMethod->invoke($videoService);
-                
-                if (empty($rawVideoData)) {
-                    error_log("V011 Migration: No video data fetched from APIs");
-                } else {
-                    // Process and rank
-                    $rankedVideoData = $processDataMethod->invoke($videoService, $rawVideoData);
+                try {
+                    $videoServiceReflection = new ReflectionClass($videoService);
+                    $fetchFromApisMethod = $videoServiceReflection->getMethod('fetchFromApis');
+                    $fetchFromApisMethod->setAccessible(true);
+                    $processDataMethod = $videoServiceReflection->getMethod('processData');
+                    $processDataMethod->setAccessible(true);
+                    $storeInDatabaseMethod = $videoServiceReflection->getMethod('storeInDatabase');
+                    $storeInDatabaseMethod->setAccessible(true);
                     
-                    if (!empty($rankedVideoData)) {
-                        // Store in database
-                        $storeInDatabaseMethod->invoke($videoService, $rankedVideoData, $countryCode, $region);
-                        error_log("V011 Migration: Successfully stored " . count($rankedVideoData) . " video charts for Zimbabwe");
+                    // Fetch from APIs
+                    $rawVideoData = $fetchFromApisMethod->invoke($videoService);
+                    
+                    if (empty($rawVideoData)) {
+                        error_log("V011 Migration: No video data fetched from APIs");
                     } else {
-                        error_log("V011 Migration: No ranked video data after processing");
+                        // Process and rank
+                        $rankedVideoData = $processDataMethod->invoke($videoService, $rawVideoData);
+                        
+                        if (!empty($rankedVideoData)) {
+                            // Store in database
+                            $storeInDatabaseMethod->invoke($videoService, $rankedVideoData, $countryCode, $region);
+                            error_log("V011 Migration: Successfully stored " . count($rankedVideoData) . " video charts for Zimbabwe");
+                        } else {
+                            error_log("V011 Migration: No ranked video data after processing");
+                        }
+                    }
+                } catch (ReflectionException $re) {
+                    error_log("V011 Migration: Reflection error: " . $re->getMessage());
+                    // Fallback: use public method (might use cache, but better than failing)
+                    try {
+                        $rankedVideoData = $videoService->fetchDataForCountry($countryCode);
+                        if (!empty($rankedVideoData)) {
+                            error_log("V011 Migration: Successfully stored " . count($rankedVideoData) . " video charts for Zimbabwe (via public method)");
+                        }
+                    } catch (Exception $e2) {
+                        error_log("V011 Migration: Fallback method also failed: " . $e2->getMessage());
                     }
                 }
             } catch (Exception $e) {
