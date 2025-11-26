@@ -205,7 +205,8 @@ PHP;
                         }
                         
                         // Create .htaccess in cache and uploads for security
-                        $htaccessContent = "Order Deny,Allow\nDeny from all\n";
+                        // Use Apache 2.4 syntax with 2.2 fallback
+                        $htaccessContent = "<IfModule mod_authz_core.c>\nRequire all denied\n</IfModule>\n<IfModule !mod_authz_core.c>\nOrder Deny,Allow\nDeny from all\n</IfModule>\n";
                         file_put_contents(__DIR__ . '/cache/.htaccess', $htaccessContent);
                         file_put_contents(__DIR__ . '/uploads/.htaccess', $htaccessContent);
                         
