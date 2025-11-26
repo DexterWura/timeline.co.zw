@@ -139,22 +139,164 @@ function createSearchOverlay() {
     return overlay;
 }
 
+// Subscribe modal functionality
+function openSubscribeModal() {
+    const modal = document.getElementById('subscribeModal');
+    if (modal) {
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+function closeSubscribeModal() {
+    const modal = document.getElementById('subscribeModal');
+    if (modal) {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+}
+
+// Initialize subscribe modal
+document.addEventListener('DOMContentLoaded', function() {
+    // Create subscribe modal if it doesn't exist
+    if (!document.getElementById('subscribeModal')) {
+        const modal = document.createElement('div');
+        modal.id = 'subscribeModal';
+        modal.className = 'subscribe-modal';
+        modal.innerHTML = `
+            <div class="subscribe-modal-content">
+                <button class="subscribe-modal-close" onclick="closeSubscribeModal()">&times;</button>
+                <h2>Subscribe to Newsletter</h2>
+                <p>Get the latest music charts, news, and updates delivered to your inbox.</p>
+                <form class="subscribe-form" id="subscribeForm">
+                    <input type="email" name="email" placeholder="Enter your email" required>
+                    <button type="submit">Subscribe</button>
+                </form>
+                <div id="subscribeMessage" style="margin-top: 1rem; display: none;"></div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+        
+        // Handle form submission
+        document.getElementById('subscribeForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const form = e.target;
+            const button = form.querySelector('button');
+            const messageDiv = document.getElementById('subscribeMessage');
+            const email = form.email.value;
+            
+            button.disabled = true;
+            button.textContent = 'Subscribing...';
+            messageDiv.style.display = 'none';
+            
+            try {
+                const response = await fetch('/api/subscribe.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: email,
+                        type: 'newsletter',
+                        source: 'website'
+                    })
+                });
+                
+                const data = await response.json();
+                
+                messageDiv.style.display = 'block';
+                if (data.success) {
+                    messageDiv.className = 'alert alert-success';
+                    messageDiv.innerHTML = '<i class="fas fa-check-circle"></i> ' + data.message;
+                    form.reset();
+                    setTimeout(() => {
+                        closeSubscribeModal();
+                    }, 2000);
+                } else {
+                    messageDiv.className = 'alert alert-error';
+                    messageDiv.innerHTML = '<i class="fas fa-exclamation-circle"></i> ' + (data.error || data.message || 'Failed to subscribe');
+                }
+            } catch (error) {
+                messageDiv.style.display = 'block';
+                messageDiv.className = 'alert alert-error';
+                messageDiv.innerHTML = '<i class="fas fa-exclamation-circle"></i> An error occurred. Please try again.';
+            } finally {
+                button.disabled = false;
+                button.textContent = 'Subscribe';
+            }
+        });
+        
+        // Close modal on outside click
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                closeSubscribeModal();
+            }
+        });
+    }
+});
+
 // Mobile menu functionality
 function initMobileMenu() {
-    // Create mobile menu button
-    const headerContent = document.querySelector('.header-top-content');
-    const mobileMenuBtn = document.createElement('button');
-    mobileMenuBtn.className = 'mobile-menu-btn';
-    mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+    const menuToggle = document.getElementById('mobileMenuToggle');
+    const mainNav = document.getElementById('mainNav');
+    const overlay = document.createElement('div');
+    overlay.className = 'mobile-menu-overlay';
+    document.body.appendChild(overlay);
     
-    // Insert mobile menu button
-    headerContent.insertBefore(mobileMenuBtn, headerContent.firstChild);
+    if (!menuToggle || !mainNav) return;
     
-    // Mobile menu functionality
-    mobileMenuBtn.addEventListener('click', () => {
-        const nav = document.querySelector('.main-nav');
-        nav.classList.toggle('mobile-active');
-        mobileMenuBtn.classList.toggle('active');
+    const toggleMenu = (open) => {
+        if (open) {
+            mainNav.classList.add('active');
+            menuToggle.classList.add('active');
+            overlay.classList.add('active');
+            document.body.classList.add('no-scroll');
+        } else {
+            mainNav.classList.remove('active');
+            menuToggle.classList.remove('active');
+            overlay.classList.remove('active');
+            document.body.classList.remove('no-scroll');
+        }
+    };
+    
+    // Toggle menu on button click
+    menuToggle.addEventListener('click', function(e) {
+        e.stopPropagation();
+        const isOpen = mainNav.classList.contains('active');
+        toggleMenu(!isOpen);
+    });
+    
+    // Close menu when clicking overlay
+    overlay.addEventListener('click', function() {
+        toggleMenu(false);
+    });
+    
+    // Close menu when clicking nav links
+    const navLinks = mainNav.querySelectorAll('.nav-link');
+    navLinks.forEach(link => {
+        link.addEventListener('click', function() {
+            if (window.innerWidth <= 991) {
+                toggleMenu(false);
+            }
+        });
+    });
+    
+    // Close menu on window resize if desktop
+    let resizeTimer;
+    window.addEventListener('resize', function() {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+            if (window.innerWidth > 991) {
+                toggleMenu(false);
+            }
+        }, 150);
+    });
+    
+    // Close menu on ESC key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && mainNav.classList.contains('active')) {
+            toggleMenu(false);
+        }
     });
 }
 

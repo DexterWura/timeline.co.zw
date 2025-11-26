@@ -67,6 +67,10 @@ $currentUser = [
                 <i class="fa-solid fa-newspaper nav-icon"></i>
                 <span>News</span>
             </a>
+            <a href="/admin/users.php" class="nav-item <?php echo (basename($_SERVER['PHP_SELF']) == 'users.php') ? 'active' : ''; ?>">
+                <i class="fa-solid fa-users nav-icon"></i>
+                <span>Users</span>
+            </a>
             <a href="/admin/migrations.php" class="nav-item <?php echo (basename($_SERVER['PHP_SELF']) == 'migrations.php') ? 'active' : ''; ?>">
                 <i class="fa-solid fa-database nav-icon"></i>
                 <span>Migrations</span>

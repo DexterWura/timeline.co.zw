@@ -1,11 +1,13 @@
 <?php
 // Common header for frontend pages
+require_once __DIR__ . '/../bootstrap.php';
 $currentPage = basename($_SERVER['PHP_SELF'], '.php');
 // Handle special cases
 if ($currentPage == 'blog-view' || $currentPage == 'article') {
     $currentPage = strpos($_SERVER['REQUEST_URI'], '/blog/') !== false ? 'blog' : 'news';
 }
 $seo = new SEO();
+$auth = new Auth();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -31,11 +33,16 @@ $seo = new SEO();
         <div class="header-top">
             <div class="container">
                 <div class="header-top-content">
+                    <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
                     <div class="logo">
                         <i class="fas fa-music"></i>
                         <span>timeline</span>
                     </div>
-                    <nav class="main-nav">
+                    <nav class="main-nav" id="mainNav">
                         <a href="/index.php" class="nav-link <?php echo $currentPage == 'index' ? 'active' : ''; ?>">Home</a>
                         <a href="/music.php" class="nav-link <?php echo $currentPage == 'music' ? 'active' : ''; ?>">Music</a>
                         <a href="/charts.php" class="nav-link <?php echo $currentPage == 'charts' ? 'active' : ''; ?>">Charts</a>
@@ -48,8 +55,16 @@ $seo = new SEO();
                         <a href="/business.php" class="nav-link <?php echo $currentPage == 'business' ? 'active' : ''; ?>">Business</a>
                     </nav>
                     <div class="header-actions">
-                        <button class="subscribe-btn">SUBSCRIBE</button>
-                        <button class="login-btn">LOGIN</button>
+                        <?php if ($auth->isLoggedIn()): ?>
+                            <a href="/profile.php" class="user-profile-link">
+                                <i class="fas fa-user"></i>
+                                <span><?php echo htmlspecialchars($auth->getUserName()); ?></span>
+                            </a>
+                            <a href="/logout.php" class="login-btn">LOGOUT</a>
+                        <?php else: ?>
+                            <button class="subscribe-btn" onclick="openSubscribeModal()">SUBSCRIBE</button>
+                            <a href="/login.php" class="login-btn">LOGIN</a>
+                        <?php endif; ?>
                         <button class="search-btn"><i class="fas fa-search"></i></button>
                     </div>
                 </div>

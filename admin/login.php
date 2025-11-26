@@ -5,10 +5,13 @@ $auth = new Auth();
 $error = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $security = Security::getInstance();
+    $security->requireCSRF();
+    
     $email = $_POST['email'] ?? '';
     $password = $_POST['password'] ?? '';
     
-    if ($auth->login($email, $password)) {
+    if ($auth->login($email, $password, true)) { // requireAdmin = true for admin login
         header('Location: /admin/dashboard.php');
         exit;
     } else {
@@ -46,6 +49,7 @@ if ($auth->isLoggedIn()) {
             <?php endif; ?>
 
             <form class="auth-form" method="POST" action="">
+                <input type="hidden" name="csrf_token" value="<?php echo Security::getInstance()->generateCSRFToken(); ?>">
                 <div class="form-group">
                     <label for="email">
                         <i class="fa-solid fa-envelope"></i> Email Address

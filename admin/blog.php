@@ -7,6 +7,11 @@ $auth = new Auth();
 $error = '';
 $success = '';
 
+// Check if user can write
+if (!$auth->canWrite()) {
+    $auth->requireAdmin();
+}
+
 $security = Security::getInstance();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
