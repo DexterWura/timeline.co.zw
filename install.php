@@ -12,7 +12,7 @@ if (!defined('APP_ENV')) {
 }
 
 // Start session for installer
-if (session_status() === PHP_SESSION_NONE) {
+if (!isset($_SESSION)) {
     @session_start();
 }
 
@@ -179,7 +179,7 @@ PHP;
                         });
                         
                         // Start session if needed
-                        if (session_status() === PHP_SESSION_NONE) {
+                        if (!isset($_SESSION)) {
                             @session_start();
                         }
                         

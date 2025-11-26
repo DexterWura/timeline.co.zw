@@ -54,7 +54,7 @@ RewriteRule ^admin/migrations/?$ /admin/migrations.php [L]
 </Files>
 
 # Allow install.php and debug files to run
-<FilesMatch "^(install|install-debug)\.php$">
+<FilesMatch "^(install|install-debug|test|debug|phpinfo)\.php$">
     Order allow,deny
     Allow from all
 </FilesMatch>
