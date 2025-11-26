@@ -235,11 +235,11 @@ include __DIR__ . '/includes/header.php';
                                         Manually refetch music charts from APIs. This will bypass cache and fetch fresh data immediately.
                                     </p>
                                     <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-                                        <button type="button" onclick="refetchMusic()" id="refetchMusicBtn" style="padding: 0.875rem 2rem; background: #00d4aa; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 500; display: flex; align-items: center; gap: 0.5rem;">
+                                        <button type="button" onclick="refetchMusic(event)" id="refetchMusicBtn" style="padding: 0.875rem 2rem; background: #00d4aa; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 500; display: flex; align-items: center; gap: 0.5rem;">
                                             <i class="fa-solid fa-music"></i>
                                             <span>Refetch Music Charts</span>
                                         </button>
-                                        <button type="button" onclick="refetchVideos()" id="refetchVideosBtn" style="padding: 0.875rem 2rem; background: #e74c3c; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 500; display: flex; align-items: center; gap: 0.5rem;">
+                                        <button type="button" onclick="refetchVideos(event)" id="refetchVideosBtn" style="padding: 0.875rem 2rem; background: #e74c3c; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 500; display: flex; align-items: center; gap: 0.5rem;">
                                             <i class="fa-solid fa-video"></i>
                                             <span>Refetch Video Charts</span>
                                         </button>
@@ -374,6 +374,29 @@ include __DIR__ . '/includes/header.php';
     </main>
 
 <script>
+// Ensure functions are available when DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+    // Add event listeners to refetch buttons as backup
+    const refetchMusicBtn = document.getElementById('refetchMusicBtn');
+    const refetchVideosBtn = document.getElementById('refetchVideosBtn');
+    
+    if (refetchMusicBtn) {
+        refetchMusicBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            refetchMusic(e);
+        });
+    }
+    
+    if (refetchVideosBtn) {
+        refetchVideosBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            refetchVideos(e);
+        });
+    }
+});
+
 function generateSitemap() {
     fetch('/admin/generate-sitemap.php', {
         method: 'POST',
@@ -395,12 +418,26 @@ function generateSitemap() {
     });
 }
 
-function refetchMusic() {
+function refetchMusic(event) {
+    if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+    }
+    
     const btn = document.getElementById('refetchMusicBtn');
     const status = document.getElementById('refetchStatus');
+    
+    if (!btn || !status) {
+        console.error('Refetch elements not found');
+        alert('Error: Page elements not found. Please refresh the page.');
+        return;
+    }
+    
     const originalHTML = btn.innerHTML;
     
     btn.disabled = true;
+    btn.style.opacity = '0.7';
+    btn.style.cursor = 'not-allowed';
     btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span>Fetching...</span>';
     status.style.display = 'block';
     status.innerHTML = '<i class="fa-solid fa-info-circle"></i> Fetching music charts from APIs... This may take a few moments.';
@@ -433,6 +470,8 @@ function refetchMusic() {
             status.innerHTML = '<i class="fa-solid fa-exclamation-circle" style="color: #e74c3c;"></i> Error: ' + (data.error || 'Failed to fetch music charts');
             status.style.color = '#e74c3c';
             btn.disabled = false;
+            btn.style.opacity = '1';
+            btn.style.cursor = 'pointer';
             btn.innerHTML = originalHTML;
         }
     })
@@ -441,16 +480,32 @@ function refetchMusic() {
         status.innerHTML = '<i class="fa-solid fa-exclamation-circle" style="color: #e74c3c;"></i> Error: ' + error.message + '. Check browser console for details.';
         status.style.color = '#e74c3c';
         btn.disabled = false;
+        btn.style.opacity = '1';
+        btn.style.cursor = 'pointer';
         btn.innerHTML = originalHTML;
     });
 }
 
-function refetchVideos() {
+function refetchVideos(event) {
+    if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+    }
+    
     const btn = document.getElementById('refetchVideosBtn');
     const status = document.getElementById('refetchStatus');
+    
+    if (!btn || !status) {
+        console.error('Refetch elements not found');
+        alert('Error: Page elements not found. Please refresh the page.');
+        return;
+    }
+    
     const originalHTML = btn.innerHTML;
     
     btn.disabled = true;
+    btn.style.opacity = '0.7';
+    btn.style.cursor = 'not-allowed';
     btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span>Fetching...</span>';
     status.style.display = 'block';
     status.innerHTML = '<i class="fa-solid fa-info-circle"></i> Fetching video charts from YouTube API... This may take a few moments.';
@@ -465,7 +520,12 @@ function refetchVideos() {
             force_refresh: true
         })
     })
-    .then(r => r.json())
+    .then(r => {
+        if (!r.ok) {
+            throw new Error('HTTP ' + r.status + ': ' + r.statusText);
+        }
+        return r.json();
+    })
     .then(data => {
         if (data.success) {
             status.innerHTML = '<i class="fa-solid fa-check-circle" style="color: #00d4aa;"></i> ' + (data.message || 'Video charts fetched successfully!');
@@ -478,12 +538,17 @@ function refetchVideos() {
             status.style.color = '#e74c3c';
         }
         btn.disabled = false;
+        btn.style.opacity = '1';
+        btn.style.cursor = 'pointer';
         btn.innerHTML = originalHTML;
     })
     .catch(error => {
-        status.innerHTML = '<i class="fa-solid fa-exclamation-circle" style="color: #e74c3c;"></i> Error: ' + error.message;
+        console.error('Refetch videos error:', error);
+        status.innerHTML = '<i class="fa-solid fa-exclamation-circle" style="color: #e74c3c;"></i> Error: ' + error.message + '. Check browser console for details.';
         status.style.color = '#e74c3c';
         btn.disabled = false;
+        btn.style.opacity = '1';
+        btn.style.cursor = 'pointer';
         btn.innerHTML = originalHTML;
     });
 }

@@ -35,8 +35,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif ($action === 'update_role') {
         $userId = (int)($_POST['user_id'] ?? 0);
         $role = $_POST['role'] ?? 'user';
+        $currentUserId = $auth->getUserId();
         
-        if ($userId && in_array($role, ['admin', 'editor', 'writer', 'moderator', 'user'])) {
+        if ($userId == $currentUserId) {
+            $error = 'You cannot change your own role';
+        } elseif ($userId && in_array($role, ['admin', 'editor', 'writer', 'moderator', 'user'])) {
             $db->update('users', ['role' => $role], 'id = :id', ['id' => $userId]);
             $success = 'User role updated successfully!';
         } else {
@@ -45,8 +48,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif ($action === 'toggle_active') {
         $userId = (int)($_POST['user_id'] ?? 0);
         $isActive = (int)($_POST['is_active'] ?? 0);
+        $currentUserId = $auth->getUserId();
         
-        if ($userId) {
+        if ($userId == $currentUserId) {
+            $error = 'You cannot deactivate your own account';
+        } elseif ($userId) {
             $db->update('users', ['is_active' => $isActive], 'id = :id', ['id' => $userId]);
             $success = 'User status updated successfully!';
         }
@@ -182,29 +188,41 @@ include __DIR__ . '/includes/header.php';
                                         <td><?php echo htmlspecialchars($user['email']); ?></td>
                                         <td><?php echo htmlspecialchars($user['username'] ?? 'N/A'); ?></td>
                                         <td>
-                                            <form method="POST" style="display: inline;">
-                                                <input type="hidden" name="action" value="update_role">
-                                                <input type="hidden" name="csrf_token" value="<?php echo Security::getInstance()->generateCSRFToken(); ?>">
-                                                <input type="hidden" name="user_id" value="<?php echo $user['id']; ?>">
-                                                <select name="role" onchange="this.form.submit()" style="padding: 0.5rem; border: 1px solid var(--glass-border); border-radius: 6px;">
-                                                    <option value="admin" <?php echo $user['role'] === 'admin' ? 'selected' : ''; ?>>Admin</option>
-                                                    <option value="editor" <?php echo $user['role'] === 'editor' ? 'selected' : ''; ?>>Editor</option>
-                                                    <option value="writer" <?php echo $user['role'] === 'writer' ? 'selected' : ''; ?>>Writer</option>
-                                                    <option value="moderator" <?php echo $user['role'] === 'moderator' ? 'selected' : ''; ?>>Moderator</option>
-                                                    <option value="user" <?php echo $user['role'] === 'user' ? 'selected' : ''; ?>>User</option>
-                                                </select>
-                                            </form>
+                                            <?php if ($user['id'] == $auth->getUserId()): ?>
+                                                <span style="padding: 0.5rem; background: rgba(0, 0, 0, 0.05); border-radius: 6px; display: inline-block;">
+                                                    <?php echo ucfirst($user['role']); ?> <small style="color: var(--text-secondary);">(You)</small>
+                                                </span>
+                                            <?php else: ?>
+                                                <form method="POST" style="display: inline;">
+                                                    <input type="hidden" name="action" value="update_role">
+                                                    <input type="hidden" name="csrf_token" value="<?php echo Security::getInstance()->generateCSRFToken(); ?>">
+                                                    <input type="hidden" name="user_id" value="<?php echo $user['id']; ?>">
+                                                    <select name="role" onchange="this.form.submit()" style="padding: 0.5rem; border: 1px solid var(--glass-border); border-radius: 6px;">
+                                                        <option value="admin" <?php echo $user['role'] === 'admin' ? 'selected' : ''; ?>>Admin</option>
+                                                        <option value="editor" <?php echo $user['role'] === 'editor' ? 'selected' : ''; ?>>Editor</option>
+                                                        <option value="writer" <?php echo $user['role'] === 'writer' ? 'selected' : ''; ?>>Writer</option>
+                                                        <option value="moderator" <?php echo $user['role'] === 'moderator' ? 'selected' : ''; ?>>Moderator</option>
+                                                        <option value="user" <?php echo $user['role'] === 'user' ? 'selected' : ''; ?>>User</option>
+                                                    </select>
+                                                </form>
+                                            <?php endif; ?>
                                         </td>
                                         <td>
-                                            <form method="POST" style="display: inline;">
-                                                <input type="hidden" name="action" value="toggle_active">
-                                                <input type="hidden" name="csrf_token" value="<?php echo Security::getInstance()->generateCSRFToken(); ?>">
-                                                <input type="hidden" name="user_id" value="<?php echo $user['id']; ?>">
-                                                <input type="hidden" name="is_active" value="<?php echo $user['is_active'] ? 0 : 1; ?>">
-                                                <button type="submit" class="btn-outline-<?php echo $user['is_active'] ? 'success' : 'danger'; ?> btn-sm">
-                                                    <?php echo $user['is_active'] ? 'Active' : 'Inactive'; ?>
-                                                </button>
-                                            </form>
+                                            <?php if ($user['id'] == $auth->getUserId()): ?>
+                                                <span style="padding: 0.5rem 1rem; background: rgba(0, 212, 170, 0.1); color: #00d4aa; border-radius: 6px; display: inline-block; font-weight: 600;">
+                                                    Active <small style="color: var(--text-secondary);">(You)</small>
+                                                </span>
+                                            <?php else: ?>
+                                                <form method="POST" style="display: inline;">
+                                                    <input type="hidden" name="action" value="toggle_active">
+                                                    <input type="hidden" name="csrf_token" value="<?php echo Security::getInstance()->generateCSRFToken(); ?>">
+                                                    <input type="hidden" name="user_id" value="<?php echo $user['id']; ?>">
+                                                    <input type="hidden" name="is_active" value="<?php echo $user['is_active'] ? 0 : 1; ?>">
+                                                    <button type="submit" class="btn-outline-<?php echo $user['is_active'] ? 'success' : 'danger'; ?> btn-sm">
+                                                        <?php echo $user['is_active'] ? 'Active' : 'Inactive'; ?>
+                                                    </button>
+                                                </form>
+                                            <?php endif; ?>
                                         </td>
                                         <td><?php echo $user['last_login'] ? date('M d, Y', strtotime($user['last_login'])) : 'Never'; ?></td>
                                         <td>

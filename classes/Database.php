@@ -2,6 +2,8 @@
 /**
  * Database Connection and Query Handler
  */
+require_once __DIR__ . '/Logger.php';
+
 class Database {
     private static $instance = null;
     private $connection;
@@ -39,6 +41,12 @@ class Database {
             $stmt->execute($params);
             return $stmt;
         } catch (PDOException $e) {
+            $logger = Logger::getInstance();
+            $logger->error("Database query failed", [
+                'sql' => $sql,
+                'params' => $params,
+                'error' => $e->getMessage()
+            ]);
             throw new Exception("Query failed: " . $e->getMessage());
         }
     }

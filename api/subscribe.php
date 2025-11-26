@@ -3,6 +3,8 @@ require_once __DIR__ . '/../bootstrap.php';
 
 header('Content-Type: application/json');
 
+$logger = Logger::getInstance();
+
 $subscription = new Subscription();
 $security = Security::getInstance();
 

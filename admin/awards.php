@@ -4,7 +4,7 @@ require_once __DIR__ . '/../bootstrap.php';
 $pageTitle = 'Awards Management';
 $db = Database::getInstance();
 $error = '';
-$success = '';
+$success = $_GET['success'] ?? '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $security = Security::getInstance();
@@ -27,24 +27,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } elseif (empty($year) || $year < 1900 || $year > date('Y')) {
             $error = 'Valid year is required';
         } else {
-            // Parse nominees if it's a textarea (comma or newline separated)
-            $nomineesArray = [];
-            if (!empty($nominees)) {
-                $nomineesList = preg_split('/[,\n\r]+/', $nominees);
-                $nomineesArray = array_map('trim', array_filter($nomineesList));
+            try {
+                // Parse nominees if it's a textarea (comma or newline separated)
+                $nomineesArray = [];
+                if (!empty($nominees)) {
+                    $nomineesList = preg_split('/[,\n\r]+/', $nominees);
+                    $nomineesArray = array_map('trim', array_filter($nomineesList));
+                }
+                
+                $insertId = $db->insert('awards', [
+                    'award_name' => $awardName,
+                    'category' => $category ?: null,
+                    'year' => $year,
+                    'winner' => $winner ?: null,
+                    'nominees' => !empty($nomineesArray) ? json_encode($nomineesArray) : null,
+                    'description' => $description ?: null,
+                    'source' => $source ?: null,
+                    'source_url' => $sourceUrl ?: null
+                ]);
+                
+                if ($insertId) {
+                    // Redirect to refresh the list and show the award
+                    header("Location: ?year={$year}&success=" . urlencode('Award created successfully!'));
+                    exit;
+                } else {
+                    $error = 'Failed to create award. Please try again.';
+                }
+            } catch (Exception $e) {
+                error_log("Award creation error: " . $e->getMessage());
+                $error = 'Error creating award: ' . $e->getMessage();
             }
-            
-            $db->insert('awards', [
-                'award_name' => $awardName,
-                'category' => $category ?: null,
-                'year' => $year,
-                'winner' => $winner ?: null,
-                'nominees' => !empty($nomineesArray) ? json_encode($nomineesArray) : null,
-                'description' => $description ?: null,
-                'source' => $source ?: null,
-                'source_url' => $sourceUrl ?: null
-            ]);
-            $success = 'Award created successfully!';
         }
     } elseif ($action === 'fetch_awards') {
         try {
@@ -56,8 +68,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     } elseif ($action === 'delete') {
         $id = (int)($_POST['id'] ?? 0);
-        $db->delete('awards', 'id = :id', ['id' => $id]);
-        $success = 'Award deleted successfully!';
+        try {
+            // Get the year before deleting to redirect properly
+            $award = $db->fetchOne("SELECT year FROM awards WHERE id = :id", ['id' => $id]);
+            $year = $award ? $award['year'] : date('Y');
+            
+            $db->delete('awards', 'id = :id', ['id' => $id]);
+            header("Location: ?year={$year}&success=" . urlencode('Award deleted successfully!'));
+            exit;
+        } catch (Exception $e) {
+            error_log("Award deletion error: " . $e->getMessage());
+            $error = 'Error deleting award: ' . $e->getMessage();
+        }
     } elseif ($action === 'edit') {
         $id = (int)($_POST['id'] ?? 0);
         $awardName = trim($_POST['award_name'] ?? '');
@@ -80,17 +102,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $nomineesArray = array_map('trim', array_filter($nomineesList));
             }
             
-            $db->update('awards', [
-                'award_name' => $awardName,
-                'category' => $category ?: null,
-                'year' => $year,
-                'winner' => $winner ?: null,
-                'nominees' => !empty($nomineesArray) ? json_encode($nomineesArray) : null,
-                'description' => $description ?: null,
-                'source' => $source ?: null,
-                'source_url' => $sourceUrl ?: null
-            ], 'id = :id', ['id' => $id]);
-            $success = 'Award updated successfully!';
+            try {
+                $db->update('awards', [
+                    'award_name' => $awardName,
+                    'category' => $category ?: null,
+                    'year' => $year,
+                    'winner' => $winner ?: null,
+                    'nominees' => !empty($nomineesArray) ? json_encode($nomineesArray) : null,
+                    'description' => $description ?: null,
+                    'source' => $source ?: null,
+                    'source_url' => $sourceUrl ?: null
+                ], 'id = :id', ['id' => $id]);
+                
+                header("Location: ?year={$year}&success=" . urlencode('Award updated successfully!'));
+                exit;
+            } catch (Exception $e) {
+                error_log("Award update error: " . $e->getMessage());
+                $error = 'Error updating award: ' . $e->getMessage();
+            }
         }
     }
 }

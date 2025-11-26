@@ -14,6 +14,14 @@ $seo->setTitle('Music Awards & Recognition')
 $year = $_GET['year'] ?? date('Y');
 $awardType = $_GET['award'] ?? '';
 
+// If no year specified and no awards exist for current year, try to get latest year
+if (empty($_GET['year'])) {
+    $latestYear = $db->fetchOne("SELECT MAX(year) as max_year FROM awards");
+    if ($latestYear && $latestYear['max_year']) {
+        $year = $latestYear['max_year'];
+    }
+}
+
 $sql = "SELECT * FROM awards WHERE year = :year";
 $params = ['year' => $year];
 
