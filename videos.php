@@ -70,7 +70,7 @@ include __DIR__ . '/includes/header.php';
                         </button>
                     </div>
                     <div style="margin-top: 1rem;">
-                        <select id="countrySelector" onchange="window.location.href='?country=' + this.value + '&date=<?php echo $date; ?>'" style="padding: 0.5rem 1rem; border: 1px solid #ddd; border-radius: 5px; background: white;">
+                        <select id="countrySelector" class="select-control" onchange="window.location.href='?country=' + this.value + '&date=<?php echo $date; ?>'">
                             <option value="">Select Country</option>
                             <?php foreach ($availableCountries as $country): ?>
                                 <option value="<?php echo htmlspecialchars($country['country_code']); ?>" 
@@ -94,7 +94,7 @@ include __DIR__ . '/includes/header.php';
     <section class="chart-content">
         <div class="container">
             <?php if (empty($videos)): ?>
-                <div style="text-align: center; padding: 4rem;">
+                <div class="empty-state">
                     <h2>No video data available</h2>
                     <p>Videos will be available once data is fetched from YouTube API.</p>
                 </div>

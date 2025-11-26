@@ -35,10 +35,10 @@ include __DIR__ . '/includes/header.php';
     <section class="chart-header">
         <div class="container">
             <h1 class="chart-title">MUSIC HALL OF FAME</h1>
-            <p style="text-align: center; color: #666; margin-top: 1rem;">Celebrating Music Legends and Icons</p>
+            <p class="section-subtitle">Celebrating Music Legends and Icons</p>
             <?php if (count($availableCountries) > 0): ?>
                 <div style="margin-top: 1rem; text-align: center;">
-                    <select id="countrySelector" onchange="window.location.href='?country=' + this.value" style="padding: 0.5rem 1rem; border: 1px solid #ddd; border-radius: 5px; background: white;">
+                    <select id="countrySelector" class="select-control" onchange="window.location.href='?country=' + this.value">
                         <option value="">All Countries</option>
                         <?php foreach ($availableCountries as $country): ?>
                             <option value="<?php echo htmlspecialchars($country['country_code']); ?>" 
@@ -55,14 +55,14 @@ include __DIR__ . '/includes/header.php';
     <section class="chart-content">
         <div class="container">
             <?php if (empty($hallOfFame)): ?>
-                <div style="text-align: center; padding: 4rem;">
+                <div class="empty-state">
                     <h2>Hall of Fame Coming Soon</h2>
                     <p>We're building our Hall of Fame with legendary artists and musicians.</p>
                 </div>
             <?php else: ?>
-                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem; margin-top: 2rem;">
+                <div class="card-grid">
                     <?php foreach ($hallOfFame as $inductee): ?>
-                        <div class="info-card" style="padding: 1.5rem; background: rgba(255, 255, 255, 0.9); border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                        <div class="info-card">
                             <div style="text-align: center; margin-bottom: 1rem;">
                                 <?php if ($inductee['image_url']): ?>
                                     <img src="<?php echo htmlspecialchars($inductee['image_url']); ?>" 

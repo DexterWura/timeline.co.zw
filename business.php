@@ -13,13 +13,13 @@ include __DIR__ . '/includes/header.php';
     <section class="chart-header">
         <div class="container">
             <h1 class="chart-title">BUSINESS CHARTS</h1>
-            <p style="text-align: center; color: #666; margin-top: 1rem;">Music industry business insights</p>
+            <p class="section-subtitle">Music industry business insights</p>
         </div>
     </section>
 
     <section class="chart-content">
         <div class="container">
-            <div style="text-align: center; padding: 4rem;">
+            <div class="empty-state">
                 <h2>Coming Soon</h2>
                 <p>Business charts and analytics will be available soon.</p>
             </div>

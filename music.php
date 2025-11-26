@@ -47,7 +47,7 @@ include __DIR__ . '/includes/header.php';
     <section class="chart-content">
         <div class="container">
             <?php if (empty($charts)): ?>
-                <div style="text-align: center; padding: 4rem;">
+                <div class="empty-state">
                     <h2>No music data available</h2>
                     <p>Music charts will be available once data is fetched from APIs.</p>
                 </div>

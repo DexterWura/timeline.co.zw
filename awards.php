@@ -36,9 +36,9 @@ include __DIR__ . '/includes/header.php';
     <section class="chart-header">
         <div class="container">
             <h1 class="chart-title">MUSIC AWARDS</h1>
-            <p style="text-align: center; color: #666; margin-top: 1rem;">Industry recognition and achievements</p>
-            <div style="margin-top: 1.5rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-                <select id="yearSelector" onchange="updateFilters()" style="padding: 0.5rem 1rem; border: 1px solid #ddd; border-radius: 5px;">
+            <p class="section-subtitle">Industry recognition and achievements</p>
+            <div class="chart-controls">
+                <select id="yearSelector" class="select-control" onchange="updateFilters()">
                     <option value="">All Years</option>
                     <?php foreach ($availableYears as $y): ?>
                         <option value="<?php echo $y['year']; ?>" <?php echo $y['year'] == $year ? 'selected' : ''; ?>>
@@ -46,7 +46,7 @@ include __DIR__ . '/includes/header.php';
                         </option>
                     <?php endforeach; ?>
                 </select>
-                <select id="awardSelector" onchange="updateFilters()" style="padding: 0.5rem 1rem; border: 1px solid #ddd; border-radius: 5px;">
+                <select id="awardSelector" class="select-control" onchange="updateFilters()">
                     <option value="">All Awards</option>
                     <?php foreach ($awardTypes as $type): ?>
                         <option value="<?php echo htmlspecialchars($type['award_name']); ?>" <?php echo $type['award_name'] === $awardType ? 'selected' : ''; ?>>
@@ -61,7 +61,7 @@ include __DIR__ . '/includes/header.php';
     <section class="chart-content">
         <div class="container">
             <?php if (empty($awards)): ?>
-                <div style="text-align: center; padding: 4rem;">
+                <div class="empty-state">
                     <h2>No Awards Data Available</h2>
                     <p>Awards data will be available once fetched from APIs.</p>
                 </div>
@@ -75,7 +75,7 @@ include __DIR__ . '/includes/header.php';
                             if ($currentAward !== ''): ?>
                                 </div>
                             <?php endif; ?>
-                            <div class="info-card" style="padding: 2rem; background: rgba(255, 255, 255, 0.9); border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                            <div class="info-card" style="padding: 2rem;">
                                 <h2 style="color: #00d4aa; margin-bottom: 1.5rem; border-bottom: 2px solid #00d4aa; padding-bottom: 0.5rem;">
                                     <?php echo htmlspecialchars($award['award_name']); ?> - <?php echo $award['year']; ?>
                                 </h2>

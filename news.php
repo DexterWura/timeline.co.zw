@@ -48,15 +48,13 @@ include __DIR__ . '/includes/header.php';
     <section class="chart-header">
         <div class="container">
             <h1 class="chart-title">NEWS & ARTICLES</h1>
-            <p style="text-align: center; color: #666; margin-top: 1rem;">Stay updated with the latest music industry news</p>
+            <p class="section-subtitle">Stay updated with the latest music industry news</p>
             <?php if (count($categories) > 0): ?>
-                <div style="margin-top: 1.5rem; display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap;">
-                    <a href="/news.php" style="padding: 0.5rem 1rem; background: <?php echo $category ? '#f0f0f0' : '#00d4aa'; ?>; color: <?php echo $category ? '#333' : 'white'; ?>; border-radius: 20px; text-decoration: none; font-size: 0.9rem;">
-                        All
-                    </a>
+                <div class="category-filters">
+                    <a href="/news.php" class="category-filter <?php echo !$category ? 'active' : ''; ?>">All</a>
                     <?php foreach ($categories as $cat): ?>
                         <a href="/news.php?category=<?php echo urlencode($cat['category']); ?>" 
-                           style="padding: 0.5rem 1rem; background: <?php echo $category === $cat['category'] ? '#00d4aa' : '#f0f0f0'; ?>; color: <?php echo $category === $cat['category'] ? 'white' : '#333'; ?>; border-radius: 20px; text-decoration: none; font-size: 0.9rem;">
+                           class="category-filter <?php echo $category === $cat['category'] ? 'active' : ''; ?>">
                             <?php echo htmlspecialchars($cat['category']); ?>
                         </a>
                     <?php endforeach; ?>
@@ -68,26 +66,22 @@ include __DIR__ . '/includes/header.php';
     <section class="chart-content">
         <div class="container">
             <?php if (empty($articles)): ?>
-                <div style="text-align: center; padding: 4rem;">
+                <div class="empty-state">
                     <h2>No articles available</h2>
                     <p>Articles will appear here once they are published.</p>
                 </div>
             <?php else: ?>
-                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem; margin-top: 2rem;">
+                <div class="card-grid">
                     <?php foreach ($articles as $article): ?>
-                        <div class="info-card" style="padding: 0; background: rgba(255, 255, 255, 0.9); border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); overflow: hidden; cursor: pointer; transition: transform 0.2s;" 
-                             onclick="window.location.href='/article.php?slug=<?php echo $article['slug']; ?>'"
-                             onmouseover="this.style.transform='translateY(-5px)'" 
-                             onmouseout="this.style.transform='translateY(0)'">
+                        <div class="card-item" onclick="window.location.href='/article.php?slug=<?php echo $article['slug']; ?>'">
                             <?php if ($article['image_url']): ?>
-                                <div style="width: 100%; height: 200px; overflow: hidden;">
+                                <div class="card-image">
                                     <img src="<?php echo htmlspecialchars($article['image_url']); ?>" 
-                                         alt="<?php echo htmlspecialchars($article['title']); ?>" 
-                                         style="width: 100%; height: 100%; object-fit: cover;">
+                                         alt="<?php echo htmlspecialchars($article['title']); ?>">
                                 </div>
                             <?php endif; ?>
-                            <div style="padding: 1.5rem;">
-                                <div style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem; font-size: 0.85rem; color: #666;">
+                            <div class="card-body">
+                                <div class="card-meta">
                                     <?php if ($article['source']): ?>
                                         <span><i class="fas fa-newspaper"></i> <?php echo htmlspecialchars($article['source']); ?></span>
                                     <?php endif; ?>
@@ -95,15 +89,15 @@ include __DIR__ . '/includes/header.php';
                                         <span><i class="fas fa-tag"></i> <?php echo htmlspecialchars($article['category']); ?></span>
                                     <?php endif; ?>
                                 </div>
-                                <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem; color: #333; line-height: 1.4;">
+                                <h3 class="card-title">
                                     <?php echo htmlspecialchars($article['title']); ?>
                                 </h3>
-                                <p style="color: #666; font-size: 0.9rem; line-height: 1.6; margin-bottom: 1rem;">
+                                <p class="card-excerpt">
                                     <?php echo htmlspecialchars($article['excerpt'] ?: substr(strip_tags($article['content']), 0, 120)); ?>...
                                 </p>
-                                <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; color: #999;">
+                                <div class="card-footer">
                                     <span><i class="fas fa-calendar"></i> <?php echo date('M j, Y', strtotime($article['published_at'] ?: $article['created_at'])); ?></span>
-                                    <span style="color: #00d4aa; font-weight: 600;">Read More →</span>
+                                    <span class="card-link">Read More →</span>
                                 </div>
                             </div>
                         </div>
@@ -112,26 +106,21 @@ include __DIR__ . '/includes/header.php';
                 
                 <!-- Pagination -->
                 <?php if ($totalPages > 1): ?>
-                    <div style="display: flex; justify-content: center; gap: 0.5rem; margin-top: 3rem;">
+                    <div class="pagination">
                         <?php if ($page > 1): ?>
-                            <a href="/news.php?page=<?php echo $page - 1; ?><?php echo $category ? '&category=' . urlencode($category) : ''; ?>" 
-                               style="padding: 0.75rem 1.5rem; background: #00d4aa; color: white; border-radius: 5px; text-decoration: none;">
-                                Previous
-                            </a>
+                            <a href="/news.php?page=<?php echo $page - 1; ?><?php echo $category ? '&category=' . urlencode($category) : ''; ?>">Previous</a>
                         <?php endif; ?>
                         
                         <?php for ($i = max(1, $page - 2); $i <= min($totalPages, $page + 2); $i++): ?>
-                            <a href="/news.php?page=<?php echo $i; ?><?php echo $category ? '&category=' . urlencode($category) : ''; ?>" 
-                               style="padding: 0.75rem 1.5rem; background: <?php echo $i === $page ? '#00d4aa' : '#f0f0f0'; ?>; color: <?php echo $i === $page ? 'white' : '#333'; ?>; border-radius: 5px; text-decoration: none;">
-                                <?php echo $i; ?>
-                            </a>
+                            <?php if ($i === $page): ?>
+                                <span class="current"><?php echo $i; ?></span>
+                            <?php else: ?>
+                                <a href="/news.php?page=<?php echo $i; ?><?php echo $category ? '&category=' . urlencode($category) : ''; ?>"><?php echo $i; ?></a>
+                            <?php endif; ?>
                         <?php endfor; ?>
                         
                         <?php if ($page < $totalPages): ?>
-                            <a href="/news.php?page=<?php echo $page + 1; ?><?php echo $category ? '&category=' . urlencode($category) : ''; ?>" 
-                               style="padding: 0.75rem 1.5rem; background: #00d4aa; color: white; border-radius: 5px; text-decoration: none;">
-                                Next
-                            </a>
+                            <a href="/news.php?page=<?php echo $page + 1; ?><?php echo $category ? '&category=' . urlencode($category) : ''; ?>">Next</a>
                         <?php endif; ?>
                     </div>
                 <?php endif; ?>

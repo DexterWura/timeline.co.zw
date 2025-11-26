@@ -53,9 +53,9 @@ include __DIR__ . '/includes/header.php';
     <section class="chart-header">
         <div class="container">
             <h1 class="chart-title">TOP 100 RICHEST PEOPLE - <?php echo strtoupper($countryName); ?></h1>
-            <p style="text-align: center; color: #666; margin-top: 1rem;">Ranked by net worth and wealth</p>
+            <p class="section-subtitle">Ranked by net worth and wealth</p>
             <div style="margin-top: 1rem; text-align: center;">
-                <select id="countrySelector" onchange="window.location.href='?country=' + this.value + '&date=<?php echo $date; ?>'" style="padding: 0.5rem 1rem; border: 1px solid #ddd; border-radius: 5px; background: white;">
+                <select id="countrySelector" class="select-control" onchange="window.location.href='?country=' + this.value + '&date=<?php echo $date; ?>'">
                     <option value="US" <?php echo $countryCode === 'US' ? 'selected' : ''; ?>>World (Global)</option>
                     <?php foreach ($availableCountries as $country): ?>
                         <option value="<?php echo htmlspecialchars($country['country_code']); ?>" 
@@ -71,7 +71,7 @@ include __DIR__ . '/includes/header.php';
     <section class="chart-content">
         <div class="container">
             <?php if (empty($richest)): ?>
-                <div style="text-align: center; padding: 4rem;">
+                <div class="empty-state">
                     <h2>No Data Available</h2>
                     <p>Richest people rankings will be available once data is fetched from APIs.</p>
                 </div>
